@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<title>DeRNA AA=60 — 99 structures (hybrid) — issue #47</title>
+<style>
+  :root { color-scheme: light; }  /* opt out of browser auto-dark (it inverts SVG bg to black) */
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; margin: 24px; background: #fafafa; }
+  h1 { font-size: 20px; font-weight: 600; }
+  .note { color: #888; font-size: 12px; margin: 0 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .card { position: relative; margin: 0; background: #fff; border: 1px solid #e3e3e3;
+          border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .fornac { width: 100%; height: 280px; overflow: hidden; }
+  .fornac svg, .fornac img { display: block; margin: 0 auto; }
+  /* override fornac's injected `svg { width:100% }` so inline SVGs stay fixed + centered */
+  .fornac svg { width: 320px; min-width: 0; height: 280px; }
+  .fornac img { width: 320px; height: 280px; }
+  figcaption { padding: 8px 12px 12px; border-top: 1px solid #f0f0f0; }
+  .title { display: block; font-weight: 600; font-size: 14px; }
+  .meta { display: block; color: #666; font-size: 12px; margin-top: 2px; }
+  .aa { display: block; margin-top: 4px; font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 10.5px; color: #777; word-break: break-all; line-height: 1.35; }
+  body.hide-aa .aa { display: none; }
+  .badge { position: absolute; bottom: 8px; right: 8px; padding: 2px 8px; border-radius: 10px;
+           font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+  .badge.pk { background: #fce4d6; color: #b5360b; border: 1px solid #f3b08a; }
+  .badge.nonpk { background: #e6f0e6; color: #2f6f3a; border: 1px solid #b7d8bb; }
+  .sortbar { margin: 0 0 14px; font-size: 13px; color: #444; }
+  .sortbar button { margin-left: 6px; padding: 3px 10px; border: 1px solid #ccc; background: #fff;
+                    border-radius: 6px; cursor: pointer; font-size: 12px; }
+  .sortbar button:hover { background: #f3f3f3; }
+  .sortbar button.active { background: #d8ebff; border-color: #9cc8f0; color: #0b5cab; }
+  .force-toggle { margin: 0 0 14px; padding: 4px 12px; border: 1px solid #ccc; background: #fff;
+                  border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .force-toggle:hover { background: #f3f3f3; }
+  .force-toggle.active { background: #d8ebff; border-color: #9cc8f0; color: #0b5cab; }
+  /* A/B compare: show the force-off layout by default, force-on when body.force-on */
+  .fornac .lay-on { display: none; }
+  body.force-on .fornac .lay-off { display: none; }
+  body.force-on .fornac .lay-on { display: block; }
+</style>
+</head>
+<body>
+<h1>DeRNA AA=60 — 99 structures (hybrid) — issue #47</h1>
+<p class="note">99 entries · pre-rendered SVG files (lazy &lt;img&gt;) · fixed positions · ./aa60_100_assets/</p>
+<div class="sortbar">Sort:<button data-key="aalen">AA length</button><button data-key="idx">Index</button><button data-key="bp">Base pairs</button><button data-key="mfe">MFE</button><button data-key="pkbp">PK pairs</button><button id="aa-toggle" style="margin-left:16px">Hide AA seq</button></div>
+<div class="grid">
+    <figure class="card" data-idx="10" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-53.5400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx10.svg" alt="idx 10"></div>
+      <figcaption>
+        <span class="title">idx 10</span>
+        <span class="meta">AA60 · 180 nt · 62 bp · MFE -53.5</span>
+        <span class="aa">AA NRNWMWIYIRSARTKVPICLLYQHLNQTIFPQSKQAKRMTKIEESNNIQNQWLEKARYKT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="22" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.2400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx22.svg" alt="idx 22"></div>
+      <figcaption>
+        <span class="title">idx 22</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -70.2</span>
+        <span class="aa">AA SKTFVSGVDPFDMMSHYHTQKDPFKHPWLEWRHRAPGNTQSSSWETFECEDPFHCRSLLE</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="24" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-59.1300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx24.svg" alt="idx 24"></div>
+      <figcaption>
+        <span class="title">idx 24</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -59.1</span>
+        <span class="aa">AA HWVNSPCNARHCEYGFTLLEDCVNYYPGCDVQVWLNWYSKHRLAMKCNPHNIYNHGVYLI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="20" data-aalen="60" data-bp="76" data-pkbp="0" data-mfe="-69.5300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx20.svg" alt="idx 20"></div>
+      <figcaption>
+        <span class="title">idx 20</span>
+        <span class="meta">AA60 · 180 nt · 76 bp · MFE -69.5</span>
+        <span class="aa">AA SFTLLNPRSDTYFNDMEYDRTDWVSQCILGKTNICSPAIYFLYQQYGKDMSRVYYVQSLT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="45" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-64.7600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx45.svg" alt="idx 45"></div>
+      <figcaption>
+        <span class="title">idx 45</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -64.8</span>
+        <span class="aa">AA TYGKLCCVMKNCMVCTNGSLWGTDASWFWYCASDQERVMWCHCQGIMQDLHGFSDFFNCV</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="54" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-57.5100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx54.svg" alt="idx 54"></div>
+      <figcaption>
+        <span class="title">idx 54</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -57.5</span>
+        <span class="aa">AA CVVIRTDRYWYSKVTAMFSQHVPNQPKPSKNQAAMISLHCFQRYCLILVFQNNSRCIYKA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="55" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.2800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx55.svg" alt="idx 55"></div>
+      <figcaption>
+        <span class="title">idx 55</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -63.3</span>
+        <span class="aa">AA SYTVVRQTMEFTSTYQSTCQCNCCPVKKGLYLEFEEGKICIPCMGVRPPKDNSSVEGKPN</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="64" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.0600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx64.svg" alt="idx 64"></div>
+      <figcaption>
+        <span class="title">idx 64</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -68.1</span>
+        <span class="aa">AA SKYYQQLQVTHFLSKVKWRRKQHDNLLVRRRDYVMANNKYRGAVDFIGRPTDAKMMERLI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="73" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.1300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx73.svg" alt="idx 73"></div>
+      <figcaption>
+        <span class="title">idx 73</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -63.1</span>
+        <span class="aa">AA FNIWCITANLWPYSSHHHEKDCSCWHRCWRGRHFRKEKPQVRDKQAGYNWIHKIQRREGW</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="84" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-51.8400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx84.svg" alt="idx 84"></div>
+      <figcaption>
+        <span class="title">idx 84</span>
+        <span class="meta">AA60 · 180 nt · 64 bp · MFE -51.8</span>
+        <span class="aa">AA HYLIVKIRTEPYCKNIQVFNCIGLDHYDMPTPHMLSTSPFACDFDRLMECNSQKYHLLSK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="83" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.8100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx83.svg" alt="idx 83"></div>
+      <figcaption>
+        <span class="title">idx 83</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="aa">AA SIYIAPQPTWGTMCIIGSGYKMQIQIQHDQVDDMYPAVIVYTLVHNRSNCMPPNVIQSWA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="87" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-55.4600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx87.svg" alt="idx 87"></div>
+      <figcaption>
+        <span class="title">idx 87</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -55.5</span>
+        <span class="aa">AA LFCMVTVKPGWAVTAFGENNAHVTMTLKEQTWKKGAITKWINVCSTMMPCDYCDGTKYTT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="91" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-65.6500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx91.svg" alt="idx 91"></div>
+      <figcaption>
+        <span class="title">idx 91</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -65.7</span>
+        <span class="aa">AA NIFVCYCGWAGHSGSYFVMISHEGNEGNGKKDHMRQSPTSAHRSLVPTTTESIQLWKILH</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="89" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-68.1500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx89.svg" alt="idx 89"></div>
+      <figcaption>
+        <span class="title">idx 89</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -68.2</span>
+        <span class="aa">AA EHDMVHCEEDRNSPYYCLCFKCDYSKWTQPQGACRVARCTWAWCYCVTWIPGNNFVRCPL</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="99" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.6300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx99.svg" alt="idx 99"></div>
+      <figcaption>
+        <span class="title">idx 99</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -66.6</span>
+        <span class="aa">AA RVYSSHPHHIPARVNGQIPTESAQIMWEFTGSTVPIFDNANVGSMICCWEKTPAQPRCRY</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="95" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-68.8300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx95.svg" alt="idx 95"></div>
+      <figcaption>
+        <span class="title">idx 95</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -68.8</span>
+        <span class="aa">AA VLFGLFSQGWVLPSPGMQLVWPAKGRPQSFAWNTVFAILEVIMPWLTLHQWMKMHNYMPA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="97" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-68.9800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx97.svg" alt="idx 97"></div>
+      <figcaption>
+        <span class="title">idx 97</span>
+        <span class="meta">AA60 · 180 nt · 64 bp · MFE -69.0</span>
+        <span class="aa">AA PDQCVTSTTQATAGNPHTREHVEFHPIHSEDLFVGFDPSWLSGHMGTWSYAPYDHVQNDD</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="98" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-71.2600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx98.svg" alt="idx 98"></div>
+      <figcaption>
+        <span class="title">idx 98</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -71.3</span>
+        <span class="aa">AA PNADFDCSFVSSYYLCWEMIWRFPMFYKCLYGFPHTVAKVRLWQIGGRTDIQPTFAWMGA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="0" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-74.7500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx0.svg" alt="idx 0"></div>
+      <figcaption>
+        <span class="title">idx 0</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -74.8</span>
+        <span class="aa">AA SSIKRQWRCLVSEYWEPDMSSTSHYGDKYHSYGYRSEGYLEPFVYQQPASGTGPGNCTVG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="1" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-52.4700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx1.svg" alt="idx 1"></div>
+      <figcaption>
+        <span class="title">idx 1</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -52.5</span>
+        <span class="aa">AA NTDNWEVNKIKDCHNRYTYAMCYEQMCVRAMGSNSSEGNHYNGDRQQGTRAWPYCKMKAG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="5" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.4500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx5.svg" alt="idx 5"></div>
+      <figcaption>
+        <span class="title">idx 5</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -75.5</span>
+        <span class="aa">AA TSHDEGRMDALIMDLIRGVRIGRCCVDGKVDKYHCGDRRQYRNQHDHLYFMRDINRPARS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="11" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-71.5900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx11.svg" alt="idx 11"></div>
+      <figcaption>
+        <span class="title">idx 11</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -71.6</span>
+        <span class="aa">AA CPNLMGRDPWCNNFQINLGLAINWPFDAIGTEIDQNNLLSSQMTEDCAWPSLWCGYEVRD</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="16" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-76.6500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx16.svg" alt="idx 16"></div>
+      <figcaption>
+        <span class="title">idx 16</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -76.7</span>
+        <span class="aa">AA TVVSCGGADMYWVEQSRTTHNSRAATNTSTCLLGCYLDLENFISPQNHPNAWKALRDDEV</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="31" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-59.2200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx31.svg" alt="idx 31"></div>
+      <figcaption>
+        <span class="title">idx 31</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -59.2</span>
+        <span class="aa">AA AWKLQVNQPLRKLSAKIQLIMWEHPGQIICGQFIDRPECNQHMQTCGMRDTDMTQYMVPQ</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="32" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-53.5400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx32.svg" alt="idx 32"></div>
+      <figcaption>
+        <span class="title">idx 32</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -53.5</span>
+        <span class="aa">AA CIIPMMGQQMNKQNHPKVQRIQHERSPIKFSQDVELQCEQQILAWPDYGNQYAPDYYIPR</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="7" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-60.6400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx7.svg" alt="idx 7"></div>
+      <figcaption>
+        <span class="title">idx 7</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -60.6</span>
+        <span class="aa">AA QYVMTFSQSTMMIEEWAVMTIADYLNECWFQGMCLVEGEHQTIIPYYRACIKQNPWPVKT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="8" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.1500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx8.svg" alt="idx 8"></div>
+      <figcaption>
+        <span class="title">idx 8</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -67.2</span>
+        <span class="aa">AA MWFCTAAQGTTCCGFTPKDSTFNLGWLVCMRSWKDENIQRYNEILHSRYAESRKSTYWGT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="2" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-63.2800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx2.svg" alt="idx 2"></div>
+      <figcaption>
+        <span class="title">idx 2</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -63.3</span>
+        <span class="aa">AA VEQFDAYIDILGPVAQQWPHKIRWFGHHYSHYTVRHIDIWNPAMVSFKWWRHGQSTWADK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="9" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-67.6300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx9.svg" alt="idx 9"></div>
+      <figcaption>
+        <span class="title">idx 9</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -67.6</span>
+        <span class="aa">AA MTFLLHFVKGGAKEMIGRIIWPEDYGMRAYEGCQSQSCGMCIHWRIDHGPREQVRREMSE</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="4" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-63.6100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx4.svg" alt="idx 4"></div>
+      <figcaption>
+        <span class="title">idx 4</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -63.6</span>
+        <span class="aa">AA CSDAMYPQELAQKESHKWFYFCYLHRNAFAQLNFCISVGMERLQFKGCQKWAWSHKHAPI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="6" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.9100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx6.svg" alt="idx 6"></div>
+      <figcaption>
+        <span class="title">idx 6</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -68.9</span>
+        <span class="aa">AA IVSEHNTECKVWIVIHIMSFCTVNSTRWYCAHVHYHRVSPWCSQQRLVISFKLPHIGTDN</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="23" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-58.0100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx23.svg" alt="idx 23"></div>
+      <figcaption>
+        <span class="title">idx 23</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -58.0</span>
+        <span class="aa">AA YVFHLFNFMSQWITQIAKVCYTKIQEIFMQRYQGHARQTAMNPHVFCVLNSNLYLWNRLK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="21" data-aalen="60" data-bp="67" data-pkbp="10" data-mfe="-53.7655">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx21.svg" alt="idx 21"></div>
+      <figcaption>
+        <span class="title">idx 21</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · 10 PK-bp · MFE -53.8</span>
+        <span class="aa">AA FVAIYQKMWREEMYSDNHFHPHCERSTQNERIKVKDIICDCNWPPNYGGQHFKHCCWGDN</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="3" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.5100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx3.svg" alt="idx 3"></div>
+      <figcaption>
+        <span class="title">idx 3</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -66.5</span>
+        <span class="aa">AA PVSQFCEVAWIEVPHKAWGIFSFMFMEHCHFWEAFQICEHIGPADQFQLMKNVGMIMWCG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="26" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-65.6100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx26.svg" alt="idx 26"></div>
+      <figcaption>
+        <span class="title">idx 26</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -65.6</span>
+        <span class="aa">AA DMQGNITYSAMCYRFQFCEHRPKHFMSQDLMCQNGMLQDNCTRLWFGPDKCGRSHSRDQI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="19" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-66.7600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx19.svg" alt="idx 19"></div>
+      <figcaption>
+        <span class="title">idx 19</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -66.8</span>
+        <span class="aa">AA NHLAIHSQPCLWDPGGPWHQPVFAPYREVCTTDLRYCWHSCCVCNQQCTRNYTTILILYT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="29" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.6100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx29.svg" alt="idx 29"></div>
+      <figcaption>
+        <span class="title">idx 29</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -62.6</span>
+        <span class="aa">AA RRTLPVCEHHKNNNAAISVANFMCETVKLRHLCEMATGQWFVGHTFHGTTEGLFLHLPMY</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="14" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-73.8600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx14.svg" alt="idx 14"></div>
+      <figcaption>
+        <span class="title">idx 14</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -73.9</span>
+        <span class="aa">AA IWRWYHRVPPHVHGSQDFRSQCVMGVNRLWSPHWNLSNSDFGGPTSKMALELETSKISQE</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="18" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-54.1300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx18.svg" alt="idx 18"></div>
+      <figcaption>
+        <span class="title">idx 18</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -54.1</span>
+        <span class="aa">AA GYKKEVQEHRLVSQFCCCEWNFPFNFETQVADLIKESCHERTCAFPGLDHICAGKMPNVT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="12" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-67.4700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx12.svg" alt="idx 12"></div>
+      <figcaption>
+        <span class="title">idx 12</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -67.5</span>
+        <span class="aa">AA IRLCLGCFAENTDIQHFPDQRSMGPPNYLWMQTYAMLQISWHPCFQAANCLFNALGWPLW</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="30" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-52.7900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx30.svg" alt="idx 30"></div>
+      <figcaption>
+        <span class="title">idx 30</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -52.8</span>
+        <span class="aa">AA YPWWAHKIKCTLQAHSNTGREAVRKEMVDWHIVTHETTQAGHIREQMYECYYEDEYSEKG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="35" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-62.0300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx35.svg" alt="idx 35"></div>
+      <figcaption>
+        <span class="title">idx 35</span>
+        <span class="meta">AA60 · 180 nt · 63 bp · MFE -62.0</span>
+        <span class="aa">AA MMMPCFHRMALGVMGTPITEGWQFNKDENQGAGPSHCIDKYEDHTQMQKLEVADRIPYND</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="27" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-67.0700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx27.svg" alt="idx 27"></div>
+      <figcaption>
+        <span class="title">idx 27</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -67.1</span>
+        <span class="aa">AA EWHWFENPQFSKAVHLNSAAMVLGQWCVLPEQNSNNRCEVDEVYCSENSQFFADQYIQIS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="25" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-63.5100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx25.svg" alt="idx 25"></div>
+      <figcaption>
+        <span class="title">idx 25</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -63.5</span>
+        <span class="aa">AA YAEQNFLKLWFCMRIHEANSRSGILQISHRIKERDEGITENTTCYAPLFYEWCGCQFKTQ</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="13" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-73.8500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx13.svg" alt="idx 13"></div>
+      <figcaption>
+        <span class="title">idx 13</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -73.8</span>
+        <span class="aa">AA EEECKSRPRPYWTCYYVAGLAWNNLWARQILKCETAYVYWMSMATGNKRQAPSKAIPFGS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="36" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-66.2000">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx36.svg" alt="idx 36"></div>
+      <figcaption>
+        <span class="title">idx 36</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -66.2</span>
+        <span class="aa">AA AQARYARADYNCICWGAHWPQIRARYYWANQNQTPTYQPHLCIGVPFVTMEHPNDMEAWD</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="33" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-61.9200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx33.svg" alt="idx 33"></div>
+      <figcaption>
+        <span class="title">idx 33</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -61.9</span>
+        <span class="aa">AA HRCAINFIEPASFMNRQGWYWWPINRSRGPYLIYRFWQHHLEYGYQSIKYYCTDNRLLSL</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="38" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-58.7800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx38.svg" alt="idx 38"></div>
+      <figcaption>
+        <span class="title">idx 38</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -58.8</span>
+        <span class="aa">AA IEQLRKIHNNTTRWSQEHHPDKYYSFGMWRMPHYKDDDPAKTWHWQPHAWPFQYLWKVPA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="34" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-70.1700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx34.svg" alt="idx 34"></div>
+      <figcaption>
+        <span class="title">idx 34</span>
+        <span class="meta">AA60 · 180 nt · 62 bp · MFE -70.2</span>
+        <span class="aa">AA NVPCDGDFQLPRPKMVIDIGLRQTDWLHKRVQWKPQCSQACDDCETEENMVEKSWTHVEQ</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="15" data-aalen="60" data-bp="76" data-pkbp="3" data-mfe="-70.9561">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx15.svg" alt="idx 15"></div>
+      <figcaption>
+        <span class="title">idx 15</span>
+        <span class="meta">AA60 · 180 nt · 76 bp · 3 PK-bp · MFE -71.0</span>
+        <span class="aa">AA MYTQGDPCFLRFAIHYDVGNWWQVYVYAKDSEEGSFSYMLAHLWPSCFAVNASKRWETWV</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="28" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-72.9500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx28.svg" alt="idx 28"></div>
+      <figcaption>
+        <span class="title">idx 28</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -73.0</span>
+        <span class="aa">AA MLLQYRACTMGMCGQLWTLPKPSMRIVLYRRQGQRSFYVPEWDNVRGGESFQGIDKEPMK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="37" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.7700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx37.svg" alt="idx 37"></div>
+      <figcaption>
+        <span class="title">idx 37</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -65.8</span>
+        <span class="aa">AA DDTHQQVAPTRSRRCITGRPCFNFCQSGGVVQQIVKQCGYYNGHFARNTCYWDAHCGKGK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="39" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-71.7500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx39.svg" alt="idx 39"></div>
+      <figcaption>
+        <span class="title">idx 39</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -71.8</span>
+        <span class="aa">AA ASGRPTSSKGNVVFSAMVIENWWYIAISGQSYLECNVDSTCTYSRSQADTGSLKPPHNRA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="41" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-62.7200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx41.svg" alt="idx 41"></div>
+      <figcaption>
+        <span class="title">idx 41</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -62.7</span>
+        <span class="aa">AA FWYQSKTCEWEHSFWVCMSTAPLTPIGTFYLPAHGMMSHMVTCHHNIKFRMTNCCRSMCC</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="17" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-62.1900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx17.svg" alt="idx 17"></div>
+      <figcaption>
+        <span class="title">idx 17</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -62.2</span>
+        <span class="aa">AA QLNLVCCVNVLTHWTPRSYVNARYDLMLEWCRDALYPMFCLAPAWVNISFLQHSWCTYHW</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="43" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.0900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx43.svg" alt="idx 43"></div>
+      <figcaption>
+        <span class="title">idx 43</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -65.1</span>
+        <span class="aa">AA PAEDYLCALVTWCVGNKMIHTYCEKPKSNAADSEKSGHWFLFAMKGCAFLESYKDSMLHD</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="47" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-53.7100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx47.svg" alt="idx 47"></div>
+      <figcaption>
+        <span class="title">idx 47</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -53.7</span>
+        <span class="aa">AA MNTQCPLTYLESAMYWTQGMPTHFCSGLPYVRTKIHNSFHMAMNWRCCNCPILPWFHEKK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="42" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-65.7800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx42.svg" alt="idx 42"></div>
+      <figcaption>
+        <span class="title">idx 42</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -65.8</span>
+        <span class="aa">AA MWMDKTSVQDRFFILIRTMVPGWGGRPQSVVPDHEHVVKTAETKQIHYCRILCCYRNQTF</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="40" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.3200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx40.svg" alt="idx 40"></div>
+      <figcaption>
+        <span class="title">idx 40</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -62.3</span>
+        <span class="aa">AA TTIVGCAWFKWARNWGMQFNNDTGGREREDCVQIDCMRTRRIGKWFPRECYYVNGDTVFS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="56" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-80.8200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx56.svg" alt="idx 56"></div>
+      <figcaption>
+        <span class="title">idx 56</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -80.8</span>
+        <span class="aa">AA AQTSTNGPRGWLQFYAGASAALFDQTWNKHKTQAGCFKGRHRRLQKSPRECWYQWWGIGE</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="46" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-69.2600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx46.svg" alt="idx 46"></div>
+      <figcaption>
+        <span class="title">idx 46</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -69.3</span>
+        <span class="aa">AA IRVKPLWYCLQNHILMIWRNNSQRWKVPYYLFIDFVKGTIHGILNEVWPHMVAYDCIDMG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="49" data-aalen="60" data-bp="61" data-pkbp="0" data-mfe="-56.8200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx49.svg" alt="idx 49"></div>
+      <figcaption>
+        <span class="title">idx 49</span>
+        <span class="meta">AA60 · 180 nt · 61 bp · MFE -56.8</span>
+        <span class="aa">AA SMHTQPHYASNAPESYTDNQEEFRHVYYWQDPRGPTVMGCIKHWTQFRWDADRTKHVFFH</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="52" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-57.2900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx52.svg" alt="idx 52"></div>
+      <figcaption>
+        <span class="title">idx 52</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -57.3</span>
+        <span class="aa">AA NTIHIVLDLVTCCRKKNNRNMTTSADFCKTSLDAHKDLFQHWWAKCIGYISGCRMHTHFK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="50" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-52.1000">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx50.svg" alt="idx 50"></div>
+      <figcaption>
+        <span class="title">idx 50</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -52.1</span>
+        <span class="aa">AA YTYKQDFPWKNGNAVIMLFHITMKEISYVDYFGDACFSVQIKHMGRKWCNRMTYFVLGAS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="48" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.8300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx48.svg" alt="idx 48"></div>
+      <figcaption>
+        <span class="title">idx 48</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -75.8</span>
+        <span class="aa">AA ITTHTQADPCCWLDECPIREKVPDRYGIRCTAWASRYGQRCYCCFMYGFDAFMQAAWCWV</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="53" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-75.0900">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx53.svg" alt="idx 53"></div>
+      <figcaption>
+        <span class="title">idx 53</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -75.1</span>
+        <span class="aa">AA FVCRAHHLRGECREGHAYGNQVESPMAGMNCPACWNIGTPILKYGWEWGQMYSWIGGEWG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="51" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.4700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx51.svg" alt="idx 51"></div>
+      <figcaption>
+        <span class="title">idx 51</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -67.5</span>
+        <span class="aa">AA TREHFQWAGFQKTWLWRMAMMYIRWFGILIVCKKLGAIMAWAVWVCWYPRLAQDSSYINL</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="58" data-aalen="60" data-bp="68" data-pkbp="24" data-mfe="-62.7552">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx58.svg" alt="idx 58"></div>
+      <figcaption>
+        <span class="title">idx 58</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · 24 PK-bp · MFE -62.8</span>
+        <span class="aa">AA DRGCPCWRENKCQHGMFGGKFLPEPLAEMIYAEQENRCIMFDHHVGVTDFGINNMKHKFQ</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="57" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-67.7800">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx57.svg" alt="idx 57"></div>
+      <figcaption>
+        <span class="title">idx 57</span>
+        <span class="meta">AA60 · 180 nt · 64 bp · MFE -67.8</span>
+        <span class="aa">AA NETTTTVPANVKACPGTQLSTPYSCVSEWMNMGNRESCNMSFCEMDCLLPMTHDCHRNLY</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="59" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-63.1100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx59.svg" alt="idx 59"></div>
+      <figcaption>
+        <span class="title">idx 59</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -63.1</span>
+        <span class="aa">AA SSTKTLLGKFHNKWDLNLGQMDERQKSSTNRNLELHKVMETWMKWPVDYTALIHHVYQNF</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="60" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-74.3300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx60.svg" alt="idx 60"></div>
+      <figcaption>
+        <span class="title">idx 60</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -74.3</span>
+        <span class="aa">AA YPEKQDMTLAGDCTQVGYGDELIVHMVCVCPAWNIVTSKGCENWNPQDQERIQDGFKPVV</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="62" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-70.3500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx62.svg" alt="idx 62"></div>
+      <figcaption>
+        <span class="title">idx 62</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -70.3</span>
+        <span class="aa">AA NSGNTGEESVITEIQTIATDLWLLCFKEPTPWRAILFIQVNEWWTWKRTILKHGWPVAGT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="68" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-61.9400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx68.svg" alt="idx 68"></div>
+      <figcaption>
+        <span class="title">idx 68</span>
+        <span class="meta">AA60 · 180 nt · 64 bp · MFE -61.9</span>
+        <span class="aa">AA TYYERFLDCHKIPVITPFIMPKKLFFFQVMTSTLRSIHNTFGLNRCFRVYWCDLFKGKRK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="65" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-63.3200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx65.svg" alt="idx 65"></div>
+      <figcaption>
+        <span class="title">idx 65</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · MFE -63.3</span>
+        <span class="aa">AA FFFGWGTAPEHSQNYYRGLGQVHQYWIGFGNDEDDEDQPHLNNPARKMLFAIAFPYRMYI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="66" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-58.9100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx66.svg" alt="idx 66"></div>
+      <figcaption>
+        <span class="title">idx 66</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -58.9</span>
+        <span class="aa">AA RQHHNNTGDNYLAITVDIVPNCVCFKQRADQNSATMGVSCPIETWPYVLIWMSEKKNIHG</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="67" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-69.8000">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx67.svg" alt="idx 67"></div>
+      <figcaption>
+        <span class="title">idx 67</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -69.8</span>
+        <span class="aa">AA EGKLWRSIPWKHRLFDLATLANGTKSNACSNAAAILKRDAQGIMQMWLPDTMQSLKIIYS</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="63" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-59.7500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx63.svg" alt="idx 63"></div>
+      <figcaption>
+        <span class="title">idx 63</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -59.8</span>
+        <span class="aa">AA RHYQYYNDQAWGCALKFSFVWTCLACQGLEKTLTKWIQITKYIWRFCIGTVLLDKYKTYF</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="61" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.4400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx61.svg" alt="idx 61"></div>
+      <figcaption>
+        <span class="title">idx 61</span>
+        <span class="meta">AA60 · 180 nt · 73 bp · MFE -70.4</span>
+        <span class="aa">AA PGYTTPCVSVRFTRMCCVHGNYGGWQFWTFSGHLGDVDQDRPSRMPDQRGTDEIFMFDTP</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="69" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-75.6300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx69.svg" alt="idx 69"></div>
+      <figcaption>
+        <span class="title">idx 69</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -75.6</span>
+        <span class="aa">AA PWGFSPACRQDCAMQSSVYMGICAEVHQPIHHEPRAPRDWIFTLFTTQSFLYNWVWNPML</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="70" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-60.2100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx70.svg" alt="idx 70"></div>
+      <figcaption>
+        <span class="title">idx 70</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -60.2</span>
+        <span class="aa">AA EHCIALDNLNHSPELYQAHDVLVIANMPFRCAGWMWNLMWSFQTSYIMWLVHNEFCRWQV</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="71" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-60.7400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx71.svg" alt="idx 71"></div>
+      <figcaption>
+        <span class="title">idx 71</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · MFE -60.7</span>
+        <span class="aa">AA REQSAHDGAVPHWHTSFKSYQQCEYYFKQIHNRWGTMCHAVDEYAKQSMASHNKAPNIMK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="72" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-66.7600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx72.svg" alt="idx 72"></div>
+      <figcaption>
+        <span class="title">idx 72</span>
+        <span class="meta">AA60 · 180 nt · 63 bp · MFE -66.8</span>
+        <span class="aa">AA APFGMMVEPKYRHDNYVTSPGSCQFRWQEIFAIYAEISIKFRYVYKEHIHAVITAGMPQF</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="74" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.7600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx74.svg" alt="idx 74"></div>
+      <figcaption>
+        <span class="title">idx 74</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="aa">AA FLLHCVIPRSFQLPPNRERRQDEKSFFVDKMEPQEPAPCISFQPMKWQQKDTYYNAMDWN</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="76" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-59.9200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx76.svg" alt="idx 76"></div>
+      <figcaption>
+        <span class="title">idx 76</span>
+        <span class="meta">AA60 · 180 nt · 63 bp · MFE -59.9</span>
+        <span class="aa">AA NLEMMYSQQSWHDKASYLEQTHKHDSDFLTCAWHLMIIACCRATNKKWTFTQVLHPDRTT</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="81" data-aalen="60" data-bp="70" data-pkbp="9" data-mfe="-56.3185">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx81.svg" alt="idx 81"></div>
+      <figcaption>
+        <span class="title">idx 81</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · 9 PK-bp · MFE -56.3</span>
+        <span class="aa">AA TFWQNIIRKCHGMAHHPTQMTKIRIIAGVDNFDKWQWITCFRRSQAIKQIDAYWQGQVHY</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="75" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-56.5300">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx75.svg" alt="idx 75"></div>
+      <figcaption>
+        <span class="title">idx 75</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -56.5</span>
+        <span class="aa">AA TANWQTTAYTEDTQDRTFIAKATHNLIDWPNRELMDYTCRFSMMLNKIWHWNAHVMPMWP</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="79" data-aalen="60" data-bp="67" data-pkbp="30" data-mfe="-55.3473">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx79.svg" alt="idx 79"></div>
+      <figcaption>
+        <span class="title">idx 79</span>
+        <span class="meta">AA60 · 180 nt · 67 bp · 30 PK-bp · MFE -55.3</span>
+        <span class="aa">AA WIMCITAPCHHHAGYQDAPIDHWTPHAFCAGTNLERWMSHSNVKKKYEKFYGYVCNHAAD</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="78" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-55.9600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx78.svg" alt="idx 78"></div>
+      <figcaption>
+        <span class="title">idx 78</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -56.0</span>
+        <span class="aa">AA YHEKPEPGGCPNPVYPYMIENLERKFCYPHEFMFHWMYGRQKFSILWSNDHALSEKHFVP</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="80" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-57.5600">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx80.svg" alt="idx 80"></div>
+      <figcaption>
+        <span class="title">idx 80</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -57.6</span>
+        <span class="aa">AA KCCMVDVRGEGPFWQEETPRTHGFIKNGNQSTIHCWNTNFAYSFCLNLYVTTLNDTWAMI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="88" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-64.3700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx88.svg" alt="idx 88"></div>
+      <figcaption>
+        <span class="title">idx 88</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -64.4</span>
+        <span class="aa">AA DQLGEYLNWRPNDICEMTDQEYSLSALVLMICVEKSTHSCEPFFELFFVMVQMLVDLSKK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="85" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-66.9700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx85.svg" alt="idx 85"></div>
+      <figcaption>
+        <span class="title">idx 85</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -67.0</span>
+        <span class="aa">AA LQSRYCGVGFNCVRMCSTKLHEMIRTDSVLHYGCYSSTPVFGVRFPYFTCVLHAWMVPQK</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="94" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-62.5700">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx94.svg" alt="idx 94"></div>
+      <figcaption>
+        <span class="title">idx 94</span>
+        <span class="meta">AA60 · 180 nt · 68 bp · MFE -62.6</span>
+        <span class="aa">AA FNTYETPHGCTSVISEATHYFIGQKDISCLHVSANWYRGMNREYAQQVQCHDVWAYQLCI</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="77" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-54.4100">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx77.svg" alt="idx 77"></div>
+      <figcaption>
+        <span class="title">idx 77</span>
+        <span class="meta">AA60 · 180 nt · 65 bp · MFE -54.4</span>
+        <span class="aa">AA DCWCQMECEFMEECGQTDGEGFQRNIIWDEASCPELDVQSFFCTICIYLQAKAHDGYYLE</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="82" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.0500">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx82.svg" alt="idx 82"></div>
+      <figcaption>
+        <span class="title">idx 82</span>
+        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.0</span>
+        <span class="aa">AA LGMACIWECVATWKEPALHFHLDIQWVSNQAWTPFETVFTKPKYTRSHWTEVDMAMNDLC</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="92" data-aalen="60" data-bp="69" data-pkbp="32" data-mfe="-58.9709">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx92.svg" alt="idx 92"></div>
+      <figcaption>
+        <span class="title">idx 92</span>
+        <span class="meta">AA60 · 180 nt · 69 bp · 32 PK-bp · MFE -59.0</span>
+        <span class="aa">AA FRMVRVQRHGATQTNCNAFWFRLMTCKFIVHNMFGVFHVSKHYMVIYYVEVRFKSVEFSK</span>
+      </figcaption>
+      <span class="badge pk">PK</span>
+    </figure>
+    <figure class="card" data-idx="86" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-65.7000">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx86.svg" alt="idx 86"></div>
+      <figcaption>
+        <span class="title">idx 86</span>
+        <span class="meta">AA60 · 180 nt · 71 bp · MFE -65.7</span>
+        <span class="aa">AA SWTTNYFDPIVSRMYRYAPCMIDQGWKNMGPHLFGSWRWMHCDAMKGQCWFASLPLQRWC</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="90" data-aalen="60" data-bp="74" data-pkbp="0" data-mfe="-70.7400">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx90.svg" alt="idx 90"></div>
+      <figcaption>
+        <span class="title">idx 90</span>
+        <span class="meta">AA60 · 180 nt · 74 bp · MFE -70.7</span>
+        <span class="aa">AA PTSVCGAQWMAARYFVAEKLMRMCLQIHGFANFCPCASLQFANWMFTLRCESWQSACIDL</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="93" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-64.8000">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx93.svg" alt="idx 93"></div>
+      <figcaption>
+        <span class="title">idx 93</span>
+        <span class="meta">AA60 · 180 nt · 72 bp · MFE -64.8</span>
+        <span class="aa">AA HSTLMNLVMLWSLSDQRVAMGDMFPWCSGIETMTANVFYQFMEKNNMDQRNRWLMLCLIA</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+    <figure class="card" data-idx="96" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-61.3200">
+      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx96.svg" alt="idx 96"></div>
+      <figcaption>
+        <span class="title">idx 96</span>
+        <span class="meta">AA60 · 180 nt · 66 bp · MFE -61.3</span>
+        <span class="aa">AA TVEPTCMYPSEELGVCGYFKPQYVQGHHCKCGMVWFNMHDYPWWECAFFFQFHEEWLSNN</span>
+      </figcaption>
+      <span class="badge nonpk">Non-PK</span>
+    </figure>
+</div>
+<script>
+(function () {
+  const grid = document.querySelector(".grid");
+  const LABELS = { aalen: "AA length", idx: "Index", bp: "Base pairs", mfe: "MFE", pkbp: "PK pairs" };
+  let cur = "idx", asc = true;
+  const num = (c, k) => {
+    const v = c.dataset[k];
+    if (v === "" || v == null) return k === "mfe" ? Infinity : -Infinity; // missing sinks last
+    return parseFloat(v);
+  };
+  function relabel() {
+    for (const k in LABELS) {
+      const b = document.querySelector('.sortbar button[data-key="' + k + '"]');
+      b.textContent = LABELS[k] + (k === cur ? (asc ? " \u2191" : " \u2193") : "");
+      b.classList.toggle("active", k === cur);
+    }
+  }
+  function sortBy(k) {
+    if (k === cur) asc = !asc; else { cur = k; asc = (k === "idx" || k === "mfe" || k === "aalen"); }
+    [...grid.children]
+      .sort((a, b) => (asc ? num(a, k) - num(b, k) : num(b, k) - num(a, k)))
+      .forEach((c) => grid.appendChild(c));
+    relabel();
+  }
+  document.querySelectorAll(".sortbar button[data-key]")
+    .forEach((b) => b.addEventListener("click", () => sortBy(b.dataset.key)));
+  relabel();
+  const aaBtn = document.getElementById("aa-toggle");
+  if (aaBtn) aaBtn.addEventListener("click", () => {
+    const hidden = document.body.classList.toggle("hide-aa");
+    aaBtn.textContent = hidden ? "Show AA seq" : "Hide AA seq";
+    aaBtn.classList.toggle("active", hidden);
+  });
+})();
+</script>
+</body>
+</html>

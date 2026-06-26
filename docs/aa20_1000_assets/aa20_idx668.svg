@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" width="760" height="640"><style>svg {
+  display: block;
+  min-width: 100%;
+  width: 100%;
+  min-height: 100%;
+}
+
+circle.node {
+  stroke: #ccc;
+  stroke-width: 1px;
+  opacity: 1;
+  fill: white;
+}
+
+circle.node.label {
+    stroke: transparent;
+    stroke-width: 0;
+    fill: white;
+}
+
+circle.outline_node {
+    stroke-width: 1px;
+    fill: red;
+}
+
+circle.protein {
+    fill: gray;
+    fill-opacity: 0.5;
+    stroke-width: 4;
+}
+
+circle.hidden_outline {
+    stroke-width: 0px;
+}
+
+
+line.link {
+  stroke: #999;
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+}
+
+line.basepair {
+  stroke: red;
+}
+
+line.intermolecule {
+  stroke: blue;
+}
+
+line.chain_chain {
+  stroke-dasharray: 3,3;
+}
+
+line.fake {
+  stroke: green;
+}
+
+.transparent {
+    fill: transparent;
+    stroke-width: 0;
+    stroke-opacity: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.drag_line {
+  stroke: #999;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.drag_line_hidden {
+  stroke: #999;
+  stroke-width: 0;
+  pointer-events: none;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 4px;
+    pointer-events: none;
+          }
+
+text.node-label {
+    font-weight: bold;
+    font-family: Tahoma, Geneva, sans-serif;
+    color: rgb(100,100,100);
+    pointer-events: none;
+}
+
+text {
+    pointer-events: none;
+}
+
+g.gnode {
+
+}
+
+circle.outline_node.selected {
+    visibility: visible;
+}
+
+circle.outline_node {
+    visibility: hidden;
+}
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+svg {
+  display: block;
+  min-width: 100%;
+  width: 100%;
+  min-height: 100%;
+}
+
+circle.node {
+  stroke: #ccc;
+  stroke-width: 1px;
+  opacity: 1;
+  fill: white;
+}
+
+circle.node.label {
+    stroke: transparent;
+    stroke-width: 0;
+    fill: white;
+}
+
+circle.outline_node {
+    stroke-width: 1px;
+    fill: red;
+}
+
+circle.protein {
+    fill: gray;
+    fill-opacity: 0.5;
+    stroke-width: 4;
+}
+
+circle.hidden_outline {
+    stroke-width: 0px;
+}
+
+
+line.link {
+  stroke: #999;
+  stroke-opacity: 0.8;
+  stroke-width: 2;
+}
+
+line.basepair {
+  stroke: red;
+}
+
+line.intermolecule {
+  stroke: blue;
+}
+
+line.chain_chain {
+  stroke-dasharray: 3,3;
+}
+
+line.fake {
+  stroke: green;
+}
+
+.transparent {
+    fill: transparent;
+    stroke-width: 0;
+    stroke-opacity: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.drag_line {
+  stroke: #999;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.drag_line_hidden {
+  stroke: #999;
+  stroke-width: 0;
+  pointer-events: none;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 4px;
+    pointer-events: none;
+          }
+
+text.node-label {
+    font-weight: bold;
+    font-family: Tahoma, Geneva, sans-serif;
+    color: rgb(100,100,100);
+    pointer-events: none;
+}
+
+text {
+    pointer-events: none;
+}
+
+g.gnode {
+
+}
+
+circle.outline_node.selected {
+    visibility: visible;
+}
+
+circle.outline_node {
+    visibility: hidden;
+}
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/*# sourceURL=/Users/yumanakamura/ipy_sandbox/sandbox/claude_sandbox/mrna-transformer/scripts/eval/prerender/forna_vendor/fornac.css*/</style><style></style><g><g class="brush" style="pointer-events: all; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><rect class="background" x="0" width="760" y="0" height="640" style="visibility: hidden; cursor: auto;"></rect><rect class="extent" x="0" width="0" y="0" height="0" style="cursor: move;"></rect><g class="resize n" transform="translate(0,0)" style="cursor: ns-resize; display: none;"><rect y="-3" width="0" height="6" style="visibility: hidden;"></rect></g><g class="resize e" transform="translate(0,0)" style="cursor: ew-resize; display: none;"><rect x="-3" width="6" height="0" style="visibility: hidden;"></rect></g><g class="resize s" transform="translate(0,0)" style="cursor: ns-resize; display: none;"><rect y="-3" width="0" height="6" style="visibility: hidden;"></rect></g><g class="resize w" transform="translate(0,0)" style="cursor: ew-resize; display: none;"><rect x="-3" width="6" height="0" style="visibility: hidden;"></rect></g><g class="resize nw" transform="translate(0,0)" style="cursor: nwse-resize; display: none;"><rect x="-3" y="-3" width="6" height="6" style="visibility: hidden;"></rect></g><g class="resize ne" transform="translate(0,0)" style="cursor: nesw-resize; display: none;"><rect x="-3" y="-3" width="6" height="6" style="visibility: hidden;"></rect></g><g class="resize se" transform="translate(0,0)" style="cursor: nwse-resize; display: none;"><rect x="-3" y="-3" width="6" height="6" style="visibility: hidden;"></rect></g><g class="resize sw" transform="translate(0,0)" style="cursor: nesw-resize; display: none;"><rect x="-3" y="-3" width="6" height="6" style="visibility: hidden;"></rect></g></g><g transform="translate(343.12,210.54) scale(1.17)"><g><line class="link basepair" x1="42.52" y1="270.52" x2="57.32" y2="268.25"></line><line class="link backbone" x1="33.43" y1="282.88" x2="42.52" y2="270.52"></line><line class="link basepair" x1="40.11" y1="255.21" x2="54.58" y2="252.65"></line><line class="link backbone" x1="42.52" y1="270.52" x2="40.11" y2="255.21"></line><line class="link basepair" x1="37.21" y1="239.77" x2="51.59" y2="236.88"></line><line class="link backbone" x1="40.11" y1="255.21" x2="37.21" y2="239.77"></line><line class="link basepair" x1="33.93" y1="224.39" x2="48.19" y2="221.12"></line><line class="link backbone" x1="37.21" y1="239.77" x2="33.93" y2="224.39"></line><line class="link basepair" x1="30.20" y1="209.06" x2="44.29" y2="205.35"></line><line class="link backbone" x1="33.93" y1="224.39" x2="30.20" y2="209.06"></line><line class="link basepair" x1="25.79" y1="194.13" x2="40.06" y2="189.68"></line><line class="link backbone" x1="30.20" y1="209.06" x2="25.79" y2="194.13"></line><line class="link backbone" x1="25.79" y1="194.13" x2="12.94" y2="185.53"></line><line class="link backbone" x1="12.94" y1="185.53" x2="11.60" y2="170.52"></line><line class="link basepair" x1="22.72" y1="159.76" x2="37.55" y2="161.62"></line><line class="link backbone" x1="11.60" y1="170.52" x2="22.72" y2="159.76"></line><line class="link basepair" x1="24.53" y1="144.15" x2="38.95" y2="145.40"></line><line class="link backbone" x1="22.72" y1="159.76" x2="24.53" y2="144.15"></line><line class="link basepair" x1="25.62" y1="128.29" x2="40.18" y2="129.11"></line><line class="link backbone" x1="24.53" y1="144.15" x2="25.62" y2="128.29"></line><line class="link basepair" x1="26.16" y1="112.67" x2="40.95" y2="112.97"></line><line class="link backbone" x1="25.62" y1="128.29" x2="26.16" y2="112.67"></line><line class="link backbone" x1="26.16" y1="112.67" x2="18.63" y2="99.48"></line><line class="link basepair" x1="26.38" y1="86.37" x2="41.15" y2="86.29"></line><line class="link backbone" x1="18.63" y1="99.48" x2="26.38" y2="86.37"></line><line class="link basepair" x1="26.02" y1="70.77" x2="40.62" y2="70.06"></line><line class="link backbone" x1="26.38" y1="86.37" x2="26.02" y2="70.77"></line><line class="link basepair" x1="24.92" y1="55.15" x2="39.48" y2="53.85"></line><line class="link backbone" x1="26.02" y1="70.77" x2="24.92" y2="55.15"></line><line class="link basepair" x1="23.25" y1="39.43" x2="37.68" y2="37.62"></line><line class="link backbone" x1="24.92" y1="55.15" x2="23.25" y2="39.43"></line><line class="link basepair" x1="21.01" y1="23.67" x2="35.35" y2="21.41"></line><line class="link backbone" x1="23.25" y1="39.43" x2="21.01" y2="23.67"></line><line class="link basepair" x1="18.27" y1="8.01" x2="32.55" y2="5.31"></line><line class="link backbone" x1="21.01" y1="23.67" x2="18.27" y2="8.01"></line><line class="link basepair" x1="14.87" y1="-7.26" x2="29.34" y2="-10.75"></line><line class="link backbone" x1="18.27" y1="8.01" x2="14.87" y2="-7.26"></line><line class="link backbone" x1="14.87" y1="-7.26" x2="2.55" y2="-16.68"></line><line class="link backbone" x1="2.55" y1="-16.68" x2="2.14" y2="-31.75"></line><line class="link basepair" x1="13.90" y1="-41.78" x2="28.58" y2="-39.05"></line><line class="link backbone" x1="2.14" y1="-31.75" x2="13.90" y2="-41.78"></line><line class="link basepair" x1="16.50" y1="-57.14" x2="30.89" y2="-55.19"></line><line class="link backbone" x1="13.90" y1="-41.78" x2="16.50" y2="-57.14"></line><line class="link basepair" x1="18.09" y1="-72.68" x2="32.96" y2="-71.21"></line><line class="link backbone" x1="16.50" y1="-57.14" x2="18.09" y2="-72.68"></line><line class="link backbone" x1="18.09" y1="-72.68" x2="6.73" y2="-82.94"></line><line class="link backbone" x1="6.73" y1="-82.94" x2="3.27" y2="-97.50"></line><line class="link backbone" x1="3.27" y1="-97.50" x2="9.12" y2="-111.36"></line><line class="link backbone" x1="9.12" y1="-111.36" x2="22.13" y2="-118.81"></line><line class="link backbone" x1="22.13" y1="-118.81" x2="37.02" y2="-117.61"></line><line class="link backbone" x1="37.02" y1="-117.61" x2="48.51" y2="-107.97"></line><line class="link backbone" x1="48.51" y1="-107.97" x2="51.79" y2="-93.27"></line><line class="link backbone" x1="51.79" y1="-93.27" x2="45.95" y2="-79.51"></line><line class="link basepair" x1="32.96" y1="-71.21" x2="18.09" y2="-72.68"></line><line class="link backbone" x1="45.95" y1="-79.51" x2="32.96" y2="-71.21"></line><line class="link basepair" x1="30.89" y1="-55.19" x2="16.50" y2="-57.14"></line><line class="link backbone" x1="32.96" y1="-71.21" x2="30.89" y2="-55.19"></line><line class="link basepair" x1="28.58" y1="-39.05" x2="13.90" y2="-41.78"></line><line class="link backbone" x1="30.89" y1="-55.19" x2="28.58" y2="-39.05"></line><line class="link backbone" x1="28.58" y1="-39.05" x2="35.68" y2="-25.13"></line><line class="link basepair" x1="29.34" y1="-10.75" x2="14.87" y2="-7.26"></line><line class="link backbone" x1="35.68" y1="-25.13" x2="29.34" y2="-10.75"></line><line class="link basepair" x1="32.55" y1="5.31" x2="18.27" y2="8.01"></line><line class="link backbone" x1="29.34" y1="-10.75" x2="32.55" y2="5.31"></line><line class="link basepair" x1="35.35" y1="21.41" x2="21.01" y2="23.67"></line><line class="link backbone" x1="32.55" y1="5.31" x2="35.35" y2="21.41"></line><line class="link basepair" x1="37.68" y1="37.62" x2="23.25" y2="39.43"></line><line class="link backbone" x1="35.35" y1="21.41" x2="37.68" y2="37.62"></line><line class="link basepair" x1="39.48" y1="53.85" x2="24.92" y2="55.15"></line><line class="link backbone" x1="37.68" y1="37.62" x2="39.48" y2="53.85"></line><line class="link basepair" x1="40.62" y1="70.06" x2="26.02" y2="70.77"></line><line class="link backbone" x1="39.48" y1="53.85" x2="40.62" y2="70.06"></line><line class="link basepair" x1="41.15" y1="86.29" x2="26.38" y2="86.37"></line><line class="link backbone" x1="40.62" y1="70.06" x2="41.15" y2="86.29"></line><line class="link backbone" x1="41.15" y1="86.29" x2="48.78" y2="99.70"></line><line class="link basepair" x1="40.95" y1="112.97" x2="26.16" y2="112.67"></line><line class="link backbone" x1="48.78" y1="99.70" x2="40.95" y2="112.97"></line><line class="link basepair" x1="40.18" y1="129.11" x2="25.62" y2="128.29"></line><line class="link backbone" x1="40.95" y1="112.97" x2="40.18" y2="129.11"></line><line class="link basepair" x1="38.95" y1="145.40" x2="24.53" y2="144.15"></line><line class="link backbone" x1="40.18" y1="129.11" x2="38.95" y2="145.40"></line><line class="link basepair" x1="37.55" y1="161.62" x2="22.72" y2="159.76"></line><line class="link backbone" x1="38.95" y1="145.40" x2="37.55" y2="161.62"></line><line class="link backbone" x1="37.55" y1="161.62" x2="45.48" y2="175.06"></line><line class="link basepair" x1="40.06" y1="189.68" x2="25.79" y2="194.13"></line><line class="link backbone" x1="45.48" y1="175.06" x2="40.06" y2="189.68"></line><line class="link basepair" x1="44.29" y1="205.35" x2="30.20" y2="209.06"></line><line class="link backbone" x1="40.06" y1="189.68" x2="44.29" y2="205.35"></line><line class="link basepair" x1="48.19" y1="221.12" x2="33.93" y2="224.39"></line><line class="link backbone" x1="44.29" y1="205.35" x2="48.19" y2="221.12"></line><line class="link basepair" x1="51.59" y1="236.88" x2="37.21" y2="239.77"></line><line class="link backbone" x1="48.19" y1="221.12" x2="51.59" y2="236.88"></line><line class="link basepair" x1="54.58" y1="252.65" x2="40.11" y2="255.21"></line><line class="link backbone" x1="51.59" y1="236.88" x2="54.58" y2="252.65"></line><line class="link basepair" x1="57.32" y1="268.25" x2="42.52" y2="270.52"></line><line class="link backbone" x1="54.58" y1="252.65" x2="57.32" y2="268.25"></line><line class="link backbone" x1="57.32" y1="268.25" x2="69.41" y2="277.82"></line><line class="link backbone" x1="69.41" y1="277.82" x2="71.48" y2="292.61"></line><line class="link backbone" x1="71.48" y1="292.61" x2="62.27" y2="304.61"></line><line class="link label_link" x1="22.72" y1="159.76" x2="7.15" y2="158.65"></line><line class="link label_link" x1="18.27" y1="8.01" x2="3.15" y2="11.77"></line><line class="link label_link" x1="22.13" y1="-118.81" x2="17.06" y2="-133.37"></line><line class="link label_link" x1="32.55" y1="5.31" x2="48.11" y2="4.20"></line><line class="link label_link" x1="37.55" y1="161.62" x2="53.09" y2="162.20"></line><line class="link label_link" x1="62.27" y1="304.61" x2="63.94" y2="319.96"></line><line class="link fake transparent" x1="22.72" y1="159.76" x2="31.04" y2="152.83"></line><line class="link fake transparent" x1="22.72" y1="159.76" x2="38.95" y2="145.40"></line><line class="link fake transparent" x1="24.53" y1="144.15" x2="31.04" y2="152.83"></line><line class="link fake transparent" x1="38.95" y1="145.40" x2="31.04" y2="152.83"></line><line class="link fake transparent" x1="37.55" y1="161.62" x2="31.04" y2="152.83"></line><line class="link fake transparent" x1="24.53" y1="144.15" x2="32.42" y2="136.72"></line><line class="link fake transparent" x1="25.62" y1="128.29" x2="32.42" y2="136.72"></line><line class="link fake transparent" x1="40.18" y1="129.11" x2="32.42" y2="136.72"></line><line class="link fake transparent" x1="38.95" y1="145.40" x2="32.42" y2="136.72"></line><line class="link fake transparent" x1="25.62" y1="128.29" x2="33.36" y2="120.76"></line><line class="link fake transparent" x1="26.16" y1="112.67" x2="33.36" y2="120.76"></line><line class="link fake transparent" x1="40.95" y1="112.97" x2="33.36" y2="120.76"></line><line class="link fake transparent" x1="40.18" y1="129.11" x2="33.36" y2="120.76"></line><line class="link fake transparent" x1="26.38" y1="86.37" x2="33.71" y2="78.37"></line><line class="link fake transparent" x1="26.02" y1="70.77" x2="33.71" y2="78.37"></line><line class="link fake transparent" x1="40.62" y1="70.06" x2="33.71" y2="78.37"></line><line class="link fake transparent" x1="41.15" y1="86.29" x2="33.71" y2="78.37"></line><line class="link fake transparent" x1="26.02" y1="70.77" x2="32.92" y2="62.44"></line><line class="link fake transparent" x1="24.92" y1="55.15" x2="32.92" y2="62.44"></line><line class="link fake transparent" x1="39.48" y1="53.85" x2="32.92" y2="62.44"></line><line class="link fake transparent" x1="40.62" y1="70.06" x2="32.92" y2="62.44"></line><line class="link fake transparent" x1="24.92" y1="55.15" x2="31.48" y2="46.52"></line><line class="link fake transparent" x1="23.25" y1="39.43" x2="31.48" y2="46.52"></line><line class="link fake transparent" x1="37.68" y1="37.62" x2="31.48" y2="46.52"></line><line class="link fake transparent" x1="39.48" y1="53.85" x2="31.48" y2="46.52"></line><line class="link fake transparent" x1="23.25" y1="39.43" x2="29.45" y2="30.53"></line><line class="link fake transparent" x1="21.01" y1="23.67" x2="29.45" y2="30.53"></line><line class="link fake transparent" x1="35.35" y1="21.41" x2="29.45" y2="30.53"></line><line class="link fake transparent" x1="37.68" y1="37.62" x2="29.45" y2="30.53"></line><line class="link fake transparent" x1="21.01" y1="23.67" x2="26.92" y2="14.56"></line><line class="link fake transparent" x1="18.27" y1="8.01" x2="26.92" y2="14.56"></line><line class="link fake transparent" x1="32.55" y1="5.31" x2="26.92" y2="14.56"></line><line class="link fake transparent" x1="35.35" y1="21.41" x2="26.92" y2="14.56"></line><line class="link fake transparent" x1="18.27" y1="8.01" x2="23.87" y2="-1.27"></line><line class="link fake transparent" x1="14.87" y1="-7.26" x2="23.87" y2="-1.27"></line><line class="link fake transparent" x1="29.34" y1="-10.75" x2="23.87" y2="-1.27"></line><line class="link fake transparent" x1="32.55" y1="5.31" x2="23.87" y2="-1.27"></line><line class="link fake transparent" x1="13.90" y1="-41.78" x2="22.62" y2="-48.17"></line><line class="link fake transparent" x1="16.50" y1="-57.14" x2="22.62" y2="-48.17"></line><line class="link fake transparent" x1="30.89" y1="-55.19" x2="22.62" y2="-48.17"></line><line class="link fake transparent" x1="28.58" y1="-39.05" x2="22.62" y2="-48.17"></line><line class="link fake transparent" x1="16.50" y1="-57.14" x2="24.74" y2="-64.13"></line><line class="link fake transparent" x1="18.09" y1="-72.68" x2="24.74" y2="-64.13"></line><line class="link fake transparent" x1="32.96" y1="-71.21" x2="24.74" y2="-64.13"></line><line class="link fake transparent" x1="30.89" y1="-55.19" x2="24.74" y2="-64.13"></line><line class="link fake transparent" x1="42.52" y1="270.52" x2="48.71" y2="261.71"></line><line class="link fake transparent" x1="40.11" y1="255.21" x2="48.71" y2="261.71"></line><line class="link fake transparent" x1="54.58" y1="252.65" x2="48.71" y2="261.71"></line><line class="link fake transparent" x1="57.32" y1="268.25" x2="48.71" y2="261.71"></line><line class="link fake transparent" x1="40.11" y1="255.21" x2="45.96" y2="246.13"></line><line class="link fake transparent" x1="37.21" y1="239.77" x2="45.96" y2="246.13"></line><line class="link fake transparent" x1="51.59" y1="236.88" x2="45.96" y2="246.13"></line><line class="link fake transparent" x1="54.58" y1="252.65" x2="45.96" y2="246.13"></line><line class="link fake transparent" x1="37.21" y1="239.77" x2="42.84" y2="230.51"></line><line class="link fake transparent" x1="33.93" y1="224.39" x2="42.84" y2="230.51"></line><line class="link fake transparent" x1="48.19" y1="221.12" x2="42.84" y2="230.51"></line><line class="link fake transparent" x1="51.59" y1="236.88" x2="42.84" y2="230.51"></line><line class="link fake transparent" x1="33.93" y1="224.39" x2="39.27" y2="214.97"></line><line class="link fake transparent" x1="30.20" y1="209.06" x2="39.27" y2="214.97"></line><line class="link fake transparent" x1="44.29" y1="205.35" x2="39.27" y2="214.97"></line><line class="link fake transparent" x1="48.19" y1="221.12" x2="39.27" y2="214.97"></line><line class="link fake transparent" x1="30.20" y1="209.06" x2="35.20" y2="199.43"></line><line class="link fake transparent" x1="25.79" y1="194.13" x2="35.20" y2="199.43"></line><line class="link fake transparent" x1="40.06" y1="189.68" x2="35.20" y2="199.43"></line><line class="link fake transparent" x1="44.29" y1="205.35" x2="35.20" y2="199.43"></line><line class="link fake transparent" x1="33.43" y1="282.88" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="33.43" y1="282.88" x2="71.48" y2="292.61"></line><line class="link fake transparent" x1="42.52" y1="270.52" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="42.52" y1="270.52" x2="62.27" y2="304.61"></line><line class="link fake transparent" x1="57.32" y1="268.25" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="57.32" y1="268.25" x2="47.44" y2="306.58"></line><line class="link fake transparent" x1="69.41" y1="277.82" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="69.41" y1="277.82" x2="35.34" y2="298.49"></line><line class="link fake transparent" x1="71.48" y1="292.61" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="71.48" y1="292.61" x2="33.43" y2="282.88"></line><line class="link fake transparent" x1="62.27" y1="304.61" x2="52.48" y2="287.42"></line><line class="link fake transparent" x1="62.27" y1="304.61" x2="42.52" y2="270.52"></line><line class="link fake transparent" x1="18.09" y1="-72.68" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="18.09" y1="-72.68" x2="37.02" y2="-117.61"></line><line class="link fake transparent" x1="6.73" y1="-82.94" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="6.73" y1="-82.94" x2="48.51" y2="-107.97"></line><line class="link fake transparent" x1="3.27" y1="-97.50" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="3.27" y1="-97.50" x2="51.79" y2="-93.27"></line><line class="link fake transparent" x1="9.12" y1="-111.36" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="9.12" y1="-111.36" x2="45.95" y2="-79.51"></line><line class="link fake transparent" x1="22.13" y1="-118.81" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="22.13" y1="-118.81" x2="32.96" y2="-71.21"></line><line class="link fake transparent" x1="37.02" y1="-117.61" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="37.02" y1="-117.61" x2="18.09" y2="-72.68"></line><line class="link fake transparent" x1="48.51" y1="-107.97" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="48.51" y1="-107.97" x2="6.73" y2="-82.94"></line><line class="link fake transparent" x1="51.79" y1="-93.27" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="51.79" y1="-93.27" x2="3.27" y2="-97.50"></line><line class="link fake transparent" x1="45.95" y1="-79.51" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="45.95" y1="-79.51" x2="9.12" y2="-111.36"></line><line class="link fake transparent" x1="32.96" y1="-71.21" x2="27.56" y2="-95.17"></line><line class="link fake transparent" x1="32.96" y1="-71.21" x2="22.13" y2="-118.81"></line><line class="link fake transparent" x1="26.16" y1="112.67" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="26.16" y1="112.67" x2="41.15" y2="86.29"></line><line class="link fake transparent" x1="18.63" y1="99.48" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="18.63" y1="99.48" x2="48.78" y2="99.70"></line><line class="link fake transparent" x1="26.38" y1="86.37" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="26.38" y1="86.37" x2="40.95" y2="112.97"></line><line class="link fake transparent" x1="41.15" y1="86.29" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="41.15" y1="86.29" x2="26.16" y2="112.67"></line><line class="link fake transparent" x1="48.78" y1="99.70" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="48.78" y1="99.70" x2="18.63" y2="99.48"></line><line class="link fake transparent" x1="40.95" y1="112.97" x2="33.76" y2="99.58"></line><line class="link fake transparent" x1="40.95" y1="112.97" x2="26.38" y2="86.37"></line><line class="link fake transparent" x1="14.87" y1="-7.26" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="14.87" y1="-7.26" x2="13.90" y2="-41.78"></line><line class="link fake transparent" x1="2.55" y1="-16.68" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="2.55" y1="-16.68" x2="28.58" y2="-39.05"></line><line class="link fake transparent" x1="2.14" y1="-31.75" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="2.14" y1="-31.75" x2="35.68" y2="-25.13"></line><line class="link fake transparent" x1="13.90" y1="-41.78" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="13.90" y1="-41.78" x2="29.34" y2="-10.75"></line><line class="link fake transparent" x1="28.58" y1="-39.05" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="28.58" y1="-39.05" x2="14.87" y2="-7.26"></line><line class="link fake transparent" x1="35.68" y1="-25.13" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="35.68" y1="-25.13" x2="2.55" y2="-16.68"></line><line class="link fake transparent" x1="29.34" y1="-10.75" x2="18.32" y2="-24.64"></line><line class="link fake transparent" x1="29.34" y1="-10.75" x2="2.14" y2="-31.75"></line><line class="link fake transparent" x1="25.79" y1="194.13" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="25.79" y1="194.13" x2="22.72" y2="159.76"></line><line class="link fake transparent" x1="12.94" y1="185.53" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="12.94" y1="185.53" x2="37.55" y2="161.62"></line><line class="link fake transparent" x1="11.60" y1="170.52" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="11.60" y1="170.52" x2="45.48" y2="175.06"></line><line class="link fake transparent" x1="22.72" y1="159.76" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="22.72" y1="159.76" x2="40.06" y2="189.68"></line><line class="link fake transparent" x1="37.55" y1="161.62" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="37.55" y1="161.62" x2="25.79" y2="194.13"></line><line class="link fake transparent" x1="45.48" y1="175.06" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="45.48" y1="175.06" x2="12.94" y2="185.53"></line><line class="link fake transparent" x1="40.06" y1="189.68" x2="28.17" y2="176.59"></line><line class="link fake transparent" x1="40.06" y1="189.68" x2="11.60" y2="170.52"></line></g><g><g class="noselect gnode" struct_name="m" transform="translate(33.43,282.88)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightsalmon;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(42.52,270.52)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(40.11,255.21)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(37.21,239.77)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(33.93,224.39)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(30.20,209.06)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(25.79,194.13)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(12.94,185.53)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(11.60,170.52)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(22.72,159.76)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(24.53,144.15)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(25.62,128.29)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(26.16,112.67)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(18.63,99.48)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(26.38,86.37)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(26.02,70.77)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(24.92,55.15)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(23.25,39.43)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(21.01,23.67)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(18.27,8.01)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(14.87,-7.26)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(2.55,-16.68)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(2.14,-31.75)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(13.90,-41.78)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(16.50,-57.14)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(18.09,-72.68)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(6.73,-82.94)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(3.27,-97.50)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(9.12,-111.36)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(22.13,-118.81)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(37.02,-117.61)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(48.51,-107.97)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(51.79,-93.27)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(45.95,-79.51)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightblue;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(32.96,-71.21)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(30.89,-55.19)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(28.58,-39.05)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(35.68,-25.13)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(29.34,-10.75)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(32.55,5.31)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(35.35,21.41)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(37.68,37.62)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(39.48,53.85)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(40.62,70.06)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(41.15,86.29)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(48.78,99.70)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(40.95,112.97)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(40.18,129.11)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(38.95,145.40)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(37.55,161.62)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(45.48,175.06)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: rgb(219, 219, 141);"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(40.06,189.68)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(44.29,205.35)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(48.19,221.12)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(51.59,236.88)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(54.58,252.65)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">A</text></g><g class="noselect gnode" struct_name="m" transform="translate(57.32,268.25)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightgreen;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">C</text></g><g class="noselect gnode" struct_name="m" transform="translate(69.41,277.82)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightsalmon;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">G</text></g><g class="noselect gnode" struct_name="m" transform="translate(71.48,292.61)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightsalmon;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(62.27,304.61)" r="6.5"><circle class="node" r="6" node_type="nucleotide" style="fill: lightsalmon;"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">U</text></g><g class="noselect gnode" struct_name="m" transform="translate(7.15,158.65)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">10</text></g><g class="noselect gnode" struct_name="m" transform="translate(3.15,11.77)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">20</text></g><g class="noselect gnode" struct_name="m" transform="translate(17.06,-133.37)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">30</text></g><g class="noselect gnode" struct_name="m" transform="translate(48.11,4.20)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">40</text></g><g class="noselect gnode" struct_name="m" transform="translate(53.09,162.20)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">50</text></g><g class="noselect gnode" struct_name="m" transform="translate(63.94,319.96)" r="6.5"><circle class="node label" r="6" node_type="label"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label">60</text></g><g class="noselect gnode" transform="translate(31.04,152.83)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(32.42,136.72)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(33.36,120.76)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(33.71,78.37)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(32.92,62.44)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(31.48,46.52)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(29.45,30.53)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(26.92,14.56)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(23.87,-1.27)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(22.62,-48.17)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(24.74,-64.13)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(48.71,261.71)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(45.96,246.13)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(42.84,230.51)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(39.27,214.97)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(35.20,199.43)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(47.44,306.58)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(35.34,298.49)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(52.48,287.42)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(27.56,-95.17)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(33.76,99.58)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(18.32,-24.64)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g><g class="noselect gnode" transform="translate(28.17,176.59)" r="6.5"><circle class="node" r="0" node_type="middle"></circle><text text-anchor="middle" font-size="8" font-weight="bold" y="2.5" class="node-label"></text></g></g><line class="drag_line" x1="0" y1="0" x2="0" y2="0"></line></g></g></svg>
