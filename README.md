@@ -1,7 +1,7 @@
 # mRNA Secondary Structure Catalog
 
-Browsable, [forna](http://rna.tbi.univie.ac.at/forna/)-style catalogs of DeRNA-generated
-mRNA secondary structures.
+Browsable, [forna](http://rna.tbi.univie.ac.at/forna/)-style catalogs of DeRNA+Knotty
+mRNA secondary structures (DeRNA-generated sequences, folded with Knotty).
 
 **🔎 Live site:** https://aspuru-guzik-group.github.io/mrna-structure-catalog/
 
@@ -28,7 +28,7 @@ per-structure SVGs (lazy-loaded via `<img>`).
 Code under [`generator/`](generator/). Requires `ViennaRNA` (NAView) and, for the
 forna-force path, Node + a system Chrome (forna's JS/CSS are vendored under
 `generator/prerender/forna_vendor/`, so generation is offline). Input is the per-sample
-parquet from the DeRNA profiling run.
+parquet from the DeRNA+Knotty profiling run (issue #47).
 
 ```bash
 cd generator && (cd prerender && npm install)   # once
