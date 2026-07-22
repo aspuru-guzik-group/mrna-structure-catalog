@@ -62,11 +62,13 @@ def _load(parquet: str, derna_mfe_json: str):
     # aa20_100 = the first 100 aa20 indices (matches the aa20_100 structure catalog: --indices 0:100)
     aa20_100 = aa20[aa20["idx"] < 100]
 
+    # Names avoid a "20 — 100" number-dash-number form (reads like an AA-length range);
+    # AA length is fixed per card, structure count is stated separately.
     pops = [
-        {"id": "aa20_1000", "name": "AA = 20 — all 1000", "pts": rows_for(aa20)},
-        {"id": "aa20_100", "name": "AA = 20 — 100 (subset)", "pts": rows_for(aa20_100)},
-        {"id": "aa60_99", "name": "AA = 60 — 99", "pts": rows_for(aa60)},
-        {"id": "all_pk", "name": "All pseudoknotted (AA 4–60)", "pts": rows_for(allpk)},
+        {"id": "aa20_1000", "name": "AA length 20 · 1000 structures", "pts": rows_for(aa20)},
+        {"id": "aa20_100", "name": "AA length 20 · 100 structures (subset)", "pts": rows_for(aa20_100)},
+        {"id": "aa60_99", "name": "AA length 60 · 99 structures", "pts": rows_for(aa60)},
+        {"id": "all_pk", "name": "All pseudoknotted · AA length 4–60", "pts": rows_for(allpk)},
     ]
     for p in pops:
         n = len(p["pts"])
