@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="color-scheme" content="light">
-<title>DeRNA+Knotty AA=60 — 99 structures — issue #47</title>
+<title>mRNA Secondary Structure Catalog — AA=60 (99, switchable Knotty / ViennaRNA / DeRNA)</title>
 <style>
   :root { color-scheme: light; }  /* opt out of browser auto-dark (it inverts SVG bg to black) */
   body { font-family: -apple-system, Helvetica, Arial, sans-serif; margin: 24px; background: #fafafa; }
@@ -40,900 +40,1742 @@
   .fornac .lay-on { display: none; }
   body.force-on .fornac .lay-off { display: none; }
   body.force-on .fornac .lay-on { display: block; }
+  /* Switch cards: a top caption bar of mode buttons [Knotty|ViennaRNA|DeRNA|Compare]
+     picks which fold the card shows; the current mode is highlighted. */
+  .topcap { display: flex; gap: 4px; padding: 6px 8px; border-bottom: 1px solid #f0f0f0;
+            background: #fafafa; flex-wrap: wrap; align-items: center; }
+  .mbtn { padding: 2px 8px; border: 1px solid #d3d3d3; background: #fff; border-radius: 6px;
+          cursor: pointer; font-size: 11px; font-weight: 600; color: #555; line-height: 1.6; }
+  .mbtn:hover { background: #f0f0f0; }
+  .mbtn.active { background: #d8ebff; border-color: #9cc8f0; color: #0b5cab; }
+  .mbtn.cmp { margin-left: auto; color: #5b3ea8; }
+  .mbtn.cmp:hover { background: #efe9fb; }
+  /* one <img> per fold; show only the img matching the card's current data-mode */
+  .card.sw .fornac img { display: none; }
+  .card.sw[data-mode="knotty"] .s-knotty { display: block; }
+  .card.sw[data-mode="vienna"] .s-vienna { display: block; }
+  .card.sw[data-mode="derna"]  .s-derna  { display: block; }
+  /* one meta line per fold; show only the active one */
+  .card.sw .meta { display: none; }
+  .card.sw[data-mode="knotty"] .m-knotty { display: block; }
+  .card.sw[data-mode="vienna"] .m-vienna { display: block; }
+  .card.sw[data-mode="derna"]  .m-derna  { display: block; }
+  .card.sw .meta .same { color: #888; font-weight: 400; }
+  /* Compare popup: a modal showing all three folds of one structure side by side. */
+  .cmp-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100;
+               display: none; align-items: center; justify-content: center; padding: 24px; }
+  .cmp-modal.open { display: flex; }
+  .cmp-box { background: #fff; border-radius: 10px; max-width: 1080px; width: 100%;
+             max-height: 92vh; overflow: auto; padding: 18px 20px 22px; }
+  .cmp-box h2 { font-size: 16px; margin: 0 0 2px; }
+  .cmp-box .sub { color: #777; font-size: 12px; margin: 0 0 14px; }
+  .cmp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .cmp-cell { border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
+  .cmp-cell h3 { font-size: 13px; margin: 0; padding: 7px 10px; background: #fafafa;
+                 border-bottom: 1px solid #f0f0f0; }
+  .cmp-cell .cmeta { font-size: 11px; color: #666; padding: 6px 10px 0; }
+  .cmp-cell img { display: block; width: 100%; height: 300px; object-fit: contain; }
+  .cmp-close { float: right; border: 1px solid #ccc; background: #fff; border-radius: 6px;
+               cursor: pointer; font-size: 13px; padding: 3px 10px; }
+  @media (max-width: 720px) { .cmp-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<h1>DeRNA+Knotty AA=60 — 99 structures — issue #47</h1>
-<p class="note">99 entries · pre-rendered SVG files (lazy &lt;img&gt;) · fixed positions · ./aa60_100_assets/</p>
+<h1>mRNA Secondary Structure Catalog — AA=60 (99, switchable Knotty / ViennaRNA / DeRNA)</h1>
+<p class="note">99 entries · per-card top bar switches Knotty / ViennaRNA / DeRNA folds; Compare shows all three (Knotty differs from DeRNA in 78, from ViennaRNA in 75). All MFEs are Knotergy energies. · ./aa60_100_assets/</p>
+<div class="sortbar">All cards:
+  <button class="mbtn allmode active" data-mode="knotty">Knotty</button>
+  <button class="mbtn allmode" data-mode="vienna">ViennaRNA</button>
+  <button class="mbtn allmode" data-mode="derna">DeRNA</button>
+</div>
+<div id="cmp-modal" class="cmp-modal">
+  <div class="cmp-box">
+    <button class="cmp-close">Close ✕</button>
+    <h2></h2><p class="sub"></p>
+    <div class="cmp-grid"></div>
+  </div>
+</div>
 <div class="sortbar">Sort:<button data-key="aalen">AA length</button><button data-key="idx">Index</button><button data-key="bp">Base pairs</button><button data-key="mfe">MFE</button><button data-key="pkbp">PK pairs</button><button id="aa-toggle" style="margin-left:16px">Hide AA seq</button></div>
 <div class="grid">
-    <figure class="card" data-idx="10" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-53.5400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx10.svg" alt="idx 10"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="10" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-53.5400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx10_knotty.svg" alt="idx 10 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx10_vienna.svg" alt="idx 10 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx10_derna.svg" alt="idx 10 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 10</span>
-        <span class="meta">AA60 · 180 nt · 62 bp · MFE -53.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 62 bp · MFE -53.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -53.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -53.3</span>
         <span class="aa">AA NRNWMWIYIRSARTKVPICLLYQHLNQTIFPQSKQAKRMTKIEESNNIQNQWLEKARYKT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="22" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.2400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx22.svg" alt="idx 22"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="22" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.2400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx22_knotty.svg" alt="idx 22 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx22_vienna.svg" alt="idx 22 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx22_derna.svg" alt="idx 22 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 22</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -70.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -70.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -70.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -70.2</span>
         <span class="aa">AA SKTFVSGVDPFDMMSHYHTQKDPFKHPWLEWRHRAPGNTQSSSWETFECEDPFHCRSLLE</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="24" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-59.1300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx24.svg" alt="idx 24"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="24" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-59.1300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx24_knotty.svg" alt="idx 24 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx24_vienna.svg" alt="idx 24 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx24_derna.svg" alt="idx 24 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 24</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -59.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -59.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 74 bp · MFE -59.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -59.4</span>
         <span class="aa">AA HWVNSPCNARHCEYGFTLLEDCVNYYPGCDVQVWLNWYSKHRLAMKCNPHNIYNHGVYLI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="20" data-aalen="60" data-bp="76" data-pkbp="0" data-mfe="-69.5300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx20.svg" alt="idx 20"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="20" data-aalen="60" data-bp="76" data-pkbp="0" data-mfe="-69.5300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx20_knotty.svg" alt="idx 20 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx20_vienna.svg" alt="idx 20 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx20_derna.svg" alt="idx 20 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 20</span>
-        <span class="meta">AA60 · 180 nt · 76 bp · MFE -69.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 76 bp · MFE -69.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 75 bp · MFE -67.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 75 bp · MFE -67.5</span>
         <span class="aa">AA SFTLLNPRSDTYFNDMEYDRTDWVSQCILGKTNICSPAIYFLYQQYGKDMSRVYYVQSLT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="45" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-64.7600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx45.svg" alt="idx 45"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="45" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-64.7600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx45_knotty.svg" alt="idx 45 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx45_vienna.svg" alt="idx 45 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx45_derna.svg" alt="idx 45 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 45</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -64.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -64.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -64.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -64.4</span>
         <span class="aa">AA TYGKLCCVMKNCMVCTNGSLWGTDASWFWYCASDQERVMWCHCQGIMQDLHGFSDFFNCV</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="54" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-57.5100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx54.svg" alt="idx 54"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="54" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-57.5100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx54_knotty.svg" alt="idx 54 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx54_vienna.svg" alt="idx 54 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx54_derna.svg" alt="idx 54 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 54</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -57.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -57.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -57.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -57.4</span>
         <span class="aa">AA CVVIRTDRYWYSKVTAMFSQHVPNQPKPSKNQAAMISLHCFQRYCLILVFQNNSRCIYKA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="55" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.2800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx55.svg" alt="idx 55"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="55" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.2800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx55_knotty.svg" alt="idx 55 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx55_vienna.svg" alt="idx 55 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx55_derna.svg" alt="idx 55 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 55</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -63.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -63.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -63.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -63.1</span>
         <span class="aa">AA SYTVVRQTMEFTSTYQSTCQCNCCPVKKGLYLEFEEGKICIPCMGVRPPKDNSSVEGKPN</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="64" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.0600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx64.svg" alt="idx 64"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="64" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.0600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx64_knotty.svg" alt="idx 64 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx64_vienna.svg" alt="idx 64 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx64_derna.svg" alt="idx 64 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 64</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -68.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -68.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -68.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -68.1</span>
         <span class="aa">AA SKYYQQLQVTHFLSKVKWRRKQHDNLLVRRRDYVMANNKYRGAVDFIGRPTDAKMMERLI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="73" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.1300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx73.svg" alt="idx 73"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="73" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-63.1300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx73_knotty.svg" alt="idx 73 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx73_vienna.svg" alt="idx 73 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx73_derna.svg" alt="idx 73 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 73</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -63.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -63.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -62.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -62.6</span>
         <span class="aa">AA FNIWCITANLWPYSSHHHEKDCSCWHRCWRGRHFRKEKPQVRDKQAGYNWIHKIQRREGW</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="84" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-51.8400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx84.svg" alt="idx 84"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="84" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-51.8400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx84_knotty.svg" alt="idx 84 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx84_vienna.svg" alt="idx 84 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx84_derna.svg" alt="idx 84 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 84</span>
-        <span class="meta">AA60 · 180 nt · 64 bp · MFE -51.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 64 bp · MFE -51.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -50.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 64 bp · MFE -50.6</span>
         <span class="aa">AA HYLIVKIRTEPYCKNIQVFNCIGLDHYDMPTPHMLSTSPFACDFDRLMECNSQKYHLLSK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="83" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.8100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx83.svg" alt="idx 83"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="83" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.8100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx83_knotty.svg" alt="idx 83 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx83_vienna.svg" alt="idx 83 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx83_derna.svg" alt="idx 83 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 83</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -65.8</span>
         <span class="aa">AA SIYIAPQPTWGTMCIIGSGYKMQIQIQHDQVDDMYPAVIVYTLVHNRSNCMPPNVIQSWA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="87" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-55.4600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx87.svg" alt="idx 87"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="87" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-55.4600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx87_knotty.svg" alt="idx 87 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx87_vienna.svg" alt="idx 87 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx87_derna.svg" alt="idx 87 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 87</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -55.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -55.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -54.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -54.9</span>
         <span class="aa">AA LFCMVTVKPGWAVTAFGENNAHVTMTLKEQTWKKGAITKWINVCSTMMPCDYCDGTKYTT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="91" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-65.6500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx91.svg" alt="idx 91"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="91" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-65.6500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx91_knotty.svg" alt="idx 91 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx91_vienna.svg" alt="idx 91 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx91_derna.svg" alt="idx 91 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 91</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -65.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -65.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -65.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -65.6</span>
         <span class="aa">AA NIFVCYCGWAGHSGSYFVMISHEGNEGNGKKDHMRQSPTSAHRSLVPTTTESIQLWKILH</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="89" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-68.1500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx89.svg" alt="idx 89"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="89" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-68.1500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx89_knotty.svg" alt="idx 89 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx89_vienna.svg" alt="idx 89 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx89_derna.svg" alt="idx 89 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 89</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -68.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -68.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -68.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -68.2</span>
         <span class="aa">AA EHDMVHCEEDRNSPYYCLCFKCDYSKWTQPQGACRVARCTWAWCYCVTWIPGNNFVRCPL</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="99" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.6300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx99.svg" alt="idx 99"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="99" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.6300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx99_knotty.svg" alt="idx 99 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx99_vienna.svg" alt="idx 99 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx99_derna.svg" alt="idx 99 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 99</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -66.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -66.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -66.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -66.6</span>
         <span class="aa">AA RVYSSHPHHIPARVNGQIPTESAQIMWEFTGSTVPIFDNANVGSMICCWEKTPAQPRCRY</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="95" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-68.8300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx95.svg" alt="idx 95"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="95" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-68.8300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx95_knotty.svg" alt="idx 95 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx95_vienna.svg" alt="idx 95 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx95_derna.svg" alt="idx 95 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 95</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -68.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -68.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -68.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -68.8</span>
         <span class="aa">AA VLFGLFSQGWVLPSPGMQLVWPAKGRPQSFAWNTVFAILEVIMPWLTLHQWMKMHNYMPA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="97" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-68.9800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx97.svg" alt="idx 97"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="97" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-68.9800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx97_knotty.svg" alt="idx 97 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx97_vienna.svg" alt="idx 97 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx97_derna.svg" alt="idx 97 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 97</span>
-        <span class="meta">AA60 · 180 nt · 64 bp · MFE -69.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 64 bp · MFE -69.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -69.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -69.2</span>
         <span class="aa">AA PDQCVTSTTQATAGNPHTREHVEFHPIHSEDLFVGFDPSWLSGHMGTWSYAPYDHVQNDD</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="98" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-71.2600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx98.svg" alt="idx 98"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="98" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-71.2600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx98_knotty.svg" alt="idx 98 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx98_vienna.svg" alt="idx 98 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx98_derna.svg" alt="idx 98 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 98</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -71.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -71.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -70.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -70.7</span>
         <span class="aa">AA PNADFDCSFVSSYYLCWEMIWRFPMFYKCLYGFPHTVAKVRLWQIGGRTDIQPTFAWMGA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="0" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-74.7500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx0.svg" alt="idx 0"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="0" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-74.7500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx0_knotty.svg" alt="idx 0 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx0_vienna.svg" alt="idx 0 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx0_derna.svg" alt="idx 0 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 0</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -74.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -74.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 74 bp · MFE -73.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -73.9</span>
         <span class="aa">AA SSIKRQWRCLVSEYWEPDMSSTSHYGDKYHSYGYRSEGYLEPFVYQQPASGTGPGNCTVG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="1" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-52.4700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx1.svg" alt="idx 1"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="1" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-52.4700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx1_knotty.svg" alt="idx 1 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx1_vienna.svg" alt="idx 1 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx1_derna.svg" alt="idx 1 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 1</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -52.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -52.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -50.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -50.9</span>
         <span class="aa">AA NTDNWEVNKIKDCHNRYTYAMCYEQMCVRAMGSNSSEGNHYNGDRQQGTRAWPYCKMKAG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="5" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.4500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx5.svg" alt="idx 5"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="5" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.4500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx5_knotty.svg" alt="idx 5 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx5_vienna.svg" alt="idx 5 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx5_derna.svg" alt="idx 5 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 5</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -75.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -75.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -75.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -74.5</span>
         <span class="aa">AA TSHDEGRMDALIMDLIRGVRIGRCCVDGKVDKYHCGDRRQYRNQHDHLYFMRDINRPARS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="11" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-71.5900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx11.svg" alt="idx 11"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="11" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-71.5900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx11_knotty.svg" alt="idx 11 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx11_vienna.svg" alt="idx 11 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx11_derna.svg" alt="idx 11 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 11</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -71.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -71.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -71.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -71.3</span>
         <span class="aa">AA CPNLMGRDPWCNNFQINLGLAINWPFDAIGTEIDQNNLLSSQMTEDCAWPSLWCGYEVRD</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="16" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-76.6500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx16.svg" alt="idx 16"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="16" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-76.6500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx16_knotty.svg" alt="idx 16 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx16_vienna.svg" alt="idx 16 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx16_derna.svg" alt="idx 16 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 16</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -76.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -76.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -76.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -76.7</span>
         <span class="aa">AA TVVSCGGADMYWVEQSRTTHNSRAATNTSTCLLGCYLDLENFISPQNHPNAWKALRDDEV</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="31" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-59.2200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx31.svg" alt="idx 31"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="31" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-59.2200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx31_knotty.svg" alt="idx 31 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx31_vienna.svg" alt="idx 31 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx31_derna.svg" alt="idx 31 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 31</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -59.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -59.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -58.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -58.1</span>
         <span class="aa">AA AWKLQVNQPLRKLSAKIQLIMWEHPGQIICGQFIDRPECNQHMQTCGMRDTDMTQYMVPQ</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="32" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-53.5400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx32.svg" alt="idx 32"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="32" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-53.5400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx32_knotty.svg" alt="idx 32 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx32_vienna.svg" alt="idx 32 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx32_derna.svg" alt="idx 32 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 32</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -53.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -53.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -53.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -53.5</span>
         <span class="aa">AA CIIPMMGQQMNKQNHPKVQRIQHERSPIKFSQDVELQCEQQILAWPDYGNQYAPDYYIPR</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="7" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-60.6400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx7.svg" alt="idx 7"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="7" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-60.6400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx7_knotty.svg" alt="idx 7 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx7_vienna.svg" alt="idx 7 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx7_derna.svg" alt="idx 7 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 7</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -60.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -60.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -60.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -60.6</span>
         <span class="aa">AA QYVMTFSQSTMMIEEWAVMTIADYLNECWFQGMCLVEGEHQTIIPYYRACIKQNPWPVKT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="8" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.1500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx8.svg" alt="idx 8"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="8" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.1500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx8_knotty.svg" alt="idx 8 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx8_vienna.svg" alt="idx 8 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx8_derna.svg" alt="idx 8 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 8</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -67.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -67.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -66.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -66.8</span>
         <span class="aa">AA MWFCTAAQGTTCCGFTPKDSTFNLGWLVCMRSWKDENIQRYNEILHSRYAESRKSTYWGT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="2" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-63.2800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx2.svg" alt="idx 2"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="2" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-63.2800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx2_knotty.svg" alt="idx 2 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx2_vienna.svg" alt="idx 2 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx2_derna.svg" alt="idx 2 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 2</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -63.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -63.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -63.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -60.9</span>
         <span class="aa">AA VEQFDAYIDILGPVAQQWPHKIRWFGHHYSHYTVRHIDIWNPAMVSFKWWRHGQSTWADK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="9" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-67.6300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx9.svg" alt="idx 9"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="9" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-67.6300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx9_knotty.svg" alt="idx 9 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx9_vienna.svg" alt="idx 9 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx9_derna.svg" alt="idx 9 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 9</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -67.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -67.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -67.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -67.5</span>
         <span class="aa">AA MTFLLHFVKGGAKEMIGRIIWPEDYGMRAYEGCQSQSCGMCIHWRIDHGPREQVRREMSE</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="4" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-63.6100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx4.svg" alt="idx 4"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="4" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-63.6100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx4_knotty.svg" alt="idx 4 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx4_vienna.svg" alt="idx 4 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx4_derna.svg" alt="idx 4 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 4</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -63.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -63.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -63.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -63.9</span>
         <span class="aa">AA CSDAMYPQELAQKESHKWFYFCYLHRNAFAQLNFCISVGMERLQFKGCQKWAWSHKHAPI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="6" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.9100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx6.svg" alt="idx 6"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="6" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-68.9100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx6_knotty.svg" alt="idx 6 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx6_vienna.svg" alt="idx 6 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx6_derna.svg" alt="idx 6 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 6</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -68.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -68.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -69.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -69.0</span>
         <span class="aa">AA IVSEHNTECKVWIVIHIMSFCTVNSTRWYCAHVHYHRVSPWCSQQRLVISFKLPHIGTDN</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="23" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-58.0100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx23.svg" alt="idx 23"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="23" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-58.0100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx23_knotty.svg" alt="idx 23 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx23_vienna.svg" alt="idx 23 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx23_derna.svg" alt="idx 23 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 23</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -58.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -58.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -58.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -57.8</span>
         <span class="aa">AA YVFHLFNFMSQWITQIAKVCYTKIQEIFMQRYQGHARQTAMNPHVFCVLNSNLYLWNRLK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="21" data-aalen="60" data-bp="67" data-pkbp="10" data-mfe="-53.7655">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx21.svg" alt="idx 21"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="21" data-aalen="60" data-bp="67" data-pkbp="10" data-mfe="-53.7655">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx21_knotty.svg" alt="idx 21 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx21_vienna.svg" alt="idx 21 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx21_derna.svg" alt="idx 21 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 21</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · 10 PK-bp · MFE -53.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · 10 PK-bp · MFE -53.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 63 bp · MFE -51.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 63 bp · MFE -51.9</span>
         <span class="aa">AA FVAIYQKMWREEMYSDNHFHPHCERSTQNERIKVKDIICDCNWPPNYGGQHFKHCCWGDN</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="3" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.5100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx3.svg" alt="idx 3"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="3" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-66.5100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx3_knotty.svg" alt="idx 3 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx3_vienna.svg" alt="idx 3 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx3_derna.svg" alt="idx 3 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 3</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -66.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -66.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -66.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -66.5</span>
         <span class="aa">AA PVSQFCEVAWIEVPHKAWGIFSFMFMEHCHFWEAFQICEHIGPADQFQLMKNVGMIMWCG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="26" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-65.6100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx26.svg" alt="idx 26"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="26" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-65.6100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx26_knotty.svg" alt="idx 26 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx26_vienna.svg" alt="idx 26 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx26_derna.svg" alt="idx 26 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 26</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -65.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -65.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -66.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -66.0</span>
         <span class="aa">AA DMQGNITYSAMCYRFQFCEHRPKHFMSQDLMCQNGMLQDNCTRLWFGPDKCGRSHSRDQI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="19" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-66.7600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx19.svg" alt="idx 19"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="19" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-66.7600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx19_knotty.svg" alt="idx 19 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx19_vienna.svg" alt="idx 19 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx19_derna.svg" alt="idx 19 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 19</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -66.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -66.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -66.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -66.8</span>
         <span class="aa">AA NHLAIHSQPCLWDPGGPWHQPVFAPYREVCTTDLRYCWHSCCVCNQQCTRNYTTILILYT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="29" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.6100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx29.svg" alt="idx 29"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="29" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.6100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx29_knotty.svg" alt="idx 29 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx29_vienna.svg" alt="idx 29 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx29_derna.svg" alt="idx 29 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 29</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -62.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -62.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -61.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -61.5</span>
         <span class="aa">AA RRTLPVCEHHKNNNAAISVANFMCETVKLRHLCEMATGQWFVGHTFHGTTEGLFLHLPMY</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="14" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-73.8600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx14.svg" alt="idx 14"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="14" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-73.8600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx14_knotty.svg" alt="idx 14 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx14_vienna.svg" alt="idx 14 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx14_derna.svg" alt="idx 14 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 14</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -73.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -73.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 75 bp · MFE -73.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 75 bp · MFE -73.3</span>
         <span class="aa">AA IWRWYHRVPPHVHGSQDFRSQCVMGVNRLWSPHWNLSNSDFGGPTSKMALELETSKISQE</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="18" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-54.1300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx18.svg" alt="idx 18"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="18" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-54.1300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx18_knotty.svg" alt="idx 18 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx18_vienna.svg" alt="idx 18 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx18_derna.svg" alt="idx 18 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 18</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -54.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -54.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -53.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -53.0</span>
         <span class="aa">AA GYKKEVQEHRLVSQFCCCEWNFPFNFETQVADLIKESCHERTCAFPGLDHICAGKMPNVT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="12" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-67.4700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx12.svg" alt="idx 12"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="12" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-67.4700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx12_knotty.svg" alt="idx 12 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx12_vienna.svg" alt="idx 12 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx12_derna.svg" alt="idx 12 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 12</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -67.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -67.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -67.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -67.5</span>
         <span class="aa">AA IRLCLGCFAENTDIQHFPDQRSMGPPNYLWMQTYAMLQISWHPCFQAANCLFNALGWPLW</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="30" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-52.7900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx30.svg" alt="idx 30"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="30" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-52.7900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx30_knotty.svg" alt="idx 30 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx30_vienna.svg" alt="idx 30 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx30_derna.svg" alt="idx 30 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 30</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -52.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -52.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -53.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -53.2</span>
         <span class="aa">AA YPWWAHKIKCTLQAHSNTGREAVRKEMVDWHIVTHETTQAGHIREQMYECYYEDEYSEKG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="35" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-62.0300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx35.svg" alt="idx 35"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="35" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-62.0300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx35_knotty.svg" alt="idx 35 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx35_vienna.svg" alt="idx 35 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx35_derna.svg" alt="idx 35 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 35</span>
-        <span class="meta">AA60 · 180 nt · 63 bp · MFE -62.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 63 bp · MFE -62.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -58.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 64 bp · MFE -59.6</span>
         <span class="aa">AA MMMPCFHRMALGVMGTPITEGWQFNKDENQGAGPSHCIDKYEDHTQMQKLEVADRIPYND</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="27" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-67.0700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx27.svg" alt="idx 27"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="27" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-67.0700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx27_knotty.svg" alt="idx 27 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx27_vienna.svg" alt="idx 27 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx27_derna.svg" alt="idx 27 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 27</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -67.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -67.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -66.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -66.6</span>
         <span class="aa">AA EWHWFENPQFSKAVHLNSAAMVLGQWCVLPEQNSNNRCEVDEVYCSENSQFFADQYIQIS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="25" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-63.5100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx25.svg" alt="idx 25"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="25" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-63.5100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx25_knotty.svg" alt="idx 25 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx25_vienna.svg" alt="idx 25 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx25_derna.svg" alt="idx 25 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 25</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -63.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -63.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -62.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -62.4</span>
         <span class="aa">AA YAEQNFLKLWFCMRIHEANSRSGILQISHRIKERDEGITENTTCYAPLFYEWCGCQFKTQ</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="13" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-73.8500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx13.svg" alt="idx 13"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="13" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-73.8500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx13_knotty.svg" alt="idx 13 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx13_vienna.svg" alt="idx 13 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx13_derna.svg" alt="idx 13 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 13</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -73.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -73.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -73.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -73.7</span>
         <span class="aa">AA EEECKSRPRPYWTCYYVAGLAWNNLWARQILKCETAYVYWMSMATGNKRQAPSKAIPFGS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="36" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-66.2000">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx36.svg" alt="idx 36"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="36" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-66.2000">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx36_knotty.svg" alt="idx 36 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx36_vienna.svg" alt="idx 36 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx36_derna.svg" alt="idx 36 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 36</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -66.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -66.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -65.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -66.2</span>
         <span class="aa">AA AQARYARADYNCICWGAHWPQIRARYYWANQNQTPTYQPHLCIGVPFVTMEHPNDMEAWD</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="33" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-61.9200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx33.svg" alt="idx 33"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="33" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-61.9200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx33_knotty.svg" alt="idx 33 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx33_vienna.svg" alt="idx 33 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx33_derna.svg" alt="idx 33 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 33</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -61.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -61.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -62.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -62.8</span>
         <span class="aa">AA HRCAINFIEPASFMNRQGWYWWPINRSRGPYLIYRFWQHHLEYGYQSIKYYCTDNRLLSL</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="38" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-58.7800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx38.svg" alt="idx 38"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="38" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-58.7800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx38_knotty.svg" alt="idx 38 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx38_vienna.svg" alt="idx 38 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx38_derna.svg" alt="idx 38 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 38</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -58.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -58.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -59.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 64 bp · MFE -59.0</span>
         <span class="aa">AA IEQLRKIHNNTTRWSQEHHPDKYYSFGMWRMPHYKDDDPAKTWHWQPHAWPFQYLWKVPA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="34" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-70.1700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx34.svg" alt="idx 34"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="34" data-aalen="60" data-bp="62" data-pkbp="0" data-mfe="-70.1700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx34_knotty.svg" alt="idx 34 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx34_vienna.svg" alt="idx 34 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx34_derna.svg" alt="idx 34 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 34</span>
-        <span class="meta">AA60 · 180 nt · 62 bp · MFE -70.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 62 bp · MFE -70.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -69.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -69.2</span>
         <span class="aa">AA NVPCDGDFQLPRPKMVIDIGLRQTDWLHKRVQWKPQCSQACDDCETEENMVEKSWTHVEQ</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="15" data-aalen="60" data-bp="76" data-pkbp="3" data-mfe="-70.9561">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx15.svg" alt="idx 15"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="15" data-aalen="60" data-bp="76" data-pkbp="3" data-mfe="-70.9561">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx15_knotty.svg" alt="idx 15 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx15_vienna.svg" alt="idx 15 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx15_derna.svg" alt="idx 15 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 15</span>
-        <span class="meta">AA60 · 180 nt · 76 bp · 3 PK-bp · MFE -71.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 76 bp · 3 PK-bp · MFE -71.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -70.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -70.7</span>
         <span class="aa">AA MYTQGDPCFLRFAIHYDVGNWWQVYVYAKDSEEGSFSYMLAHLWPSCFAVNASKRWETWV</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="28" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-72.9500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx28.svg" alt="idx 28"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="28" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-72.9500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx28_knotty.svg" alt="idx 28 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx28_vienna.svg" alt="idx 28 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx28_derna.svg" alt="idx 28 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 28</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -73.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -73.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -71.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -71.4</span>
         <span class="aa">AA MLLQYRACTMGMCGQLWTLPKPSMRIVLYRRQGQRSFYVPEWDNVRGGESFQGIDKEPMK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="37" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.7700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx37.svg" alt="idx 37"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="37" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.7700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx37_knotty.svg" alt="idx 37 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx37_vienna.svg" alt="idx 37 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx37_derna.svg" alt="idx 37 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 37</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -65.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -65.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -65.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -65.6</span>
         <span class="aa">AA DDTHQQVAPTRSRRCITGRPCFNFCQSGGVVQQIVKQCGYYNGHFARNTCYWDAHCGKGK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="39" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-71.7500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx39.svg" alt="idx 39"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="39" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-71.7500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx39_knotty.svg" alt="idx 39 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx39_vienna.svg" alt="idx 39 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx39_derna.svg" alt="idx 39 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 39</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -71.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -71.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -71.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -71.8</span>
         <span class="aa">AA ASGRPTSSKGNVVFSAMVIENWWYIAISGQSYLECNVDSTCTYSRSQADTGSLKPPHNRA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="41" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-62.7200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx41.svg" alt="idx 41"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="41" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-62.7200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx41_knotty.svg" alt="idx 41 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx41_vienna.svg" alt="idx 41 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx41_derna.svg" alt="idx 41 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 41</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -62.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -62.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -62.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -62.6</span>
         <span class="aa">AA FWYQSKTCEWEHSFWVCMSTAPLTPIGTFYLPAHGMMSHMVTCHHNIKFRMTNCCRSMCC</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="17" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-62.1900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx17.svg" alt="idx 17"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="17" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-62.1900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx17_knotty.svg" alt="idx 17 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx17_vienna.svg" alt="idx 17 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx17_derna.svg" alt="idx 17 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 17</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -62.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -62.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -62.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -62.1</span>
         <span class="aa">AA QLNLVCCVNVLTHWTPRSYVNARYDLMLEWCRDALYPMFCLAPAWVNISFLQHSWCTYHW</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="43" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.0900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx43.svg" alt="idx 43"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="43" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-65.0900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx43_knotty.svg" alt="idx 43 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx43_vienna.svg" alt="idx 43 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx43_derna.svg" alt="idx 43 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 43</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -65.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -65.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -64.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -64.0</span>
         <span class="aa">AA PAEDYLCALVTWCVGNKMIHTYCEKPKSNAADSEKSGHWFLFAMKGCAFLESYKDSMLHD</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="47" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-53.7100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx47.svg" alt="idx 47"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="47" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-53.7100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx47_knotty.svg" alt="idx 47 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx47_vienna.svg" alt="idx 47 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx47_derna.svg" alt="idx 47 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 47</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -53.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -53.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -53.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -53.9</span>
         <span class="aa">AA MNTQCPLTYLESAMYWTQGMPTHFCSGLPYVRTKIHNSFHMAMNWRCCNCPILPWFHEKK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="42" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-65.7800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx42.svg" alt="idx 42"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="42" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-65.7800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx42_knotty.svg" alt="idx 42 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx42_vienna.svg" alt="idx 42 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx42_derna.svg" alt="idx 42 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 42</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -65.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -65.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -66.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -66.5</span>
         <span class="aa">AA MWMDKTSVQDRFFILIRTMVPGWGGRPQSVVPDHEHVVKTAETKQIHYCRILCCYRNQTF</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="40" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.3200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx40.svg" alt="idx 40"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="40" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-62.3200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx40_knotty.svg" alt="idx 40 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx40_vienna.svg" alt="idx 40 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx40_derna.svg" alt="idx 40 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 40</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -62.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -62.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -62.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -62.3</span>
         <span class="aa">AA TTIVGCAWFKWARNWGMQFNNDTGGREREDCVQIDCMRTRRIGKWFPRECYYVNGDTVFS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="56" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-80.8200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx56.svg" alt="idx 56"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="56" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-80.8200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx56_knotty.svg" alt="idx 56 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx56_vienna.svg" alt="idx 56 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx56_derna.svg" alt="idx 56 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 56</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -80.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -80.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -79.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -79.6</span>
         <span class="aa">AA AQTSTNGPRGWLQFYAGASAALFDQTWNKHKTQAGCFKGRHRRLQKSPRECWYQWWGIGE</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="46" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-69.2600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx46.svg" alt="idx 46"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="46" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-69.2600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx46_knotty.svg" alt="idx 46 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx46_vienna.svg" alt="idx 46 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx46_derna.svg" alt="idx 46 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 46</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -69.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -69.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -68.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -68.9</span>
         <span class="aa">AA IRVKPLWYCLQNHILMIWRNNSQRWKVPYYLFIDFVKGTIHGILNEVWPHMVAYDCIDMG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="49" data-aalen="60" data-bp="61" data-pkbp="0" data-mfe="-56.8200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx49.svg" alt="idx 49"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="49" data-aalen="60" data-bp="61" data-pkbp="0" data-mfe="-56.8200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx49_knotty.svg" alt="idx 49 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx49_vienna.svg" alt="idx 49 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx49_derna.svg" alt="idx 49 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 49</span>
-        <span class="meta">AA60 · 180 nt · 61 bp · MFE -56.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 61 bp · MFE -56.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 65 bp · MFE -56.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 65 bp · MFE -56.2</span>
         <span class="aa">AA SMHTQPHYASNAPESYTDNQEEFRHVYYWQDPRGPTVMGCIKHWTQFRWDADRTKHVFFH</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="52" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-57.2900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx52.svg" alt="idx 52"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="52" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-57.2900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx52_knotty.svg" alt="idx 52 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx52_vienna.svg" alt="idx 52 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx52_derna.svg" alt="idx 52 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 52</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -57.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -57.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -57.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -57.1</span>
         <span class="aa">AA NTIHIVLDLVTCCRKKNNRNMTTSADFCKTSLDAHKDLFQHWWAKCIGYISGCRMHTHFK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="50" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-52.1000">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx50.svg" alt="idx 50"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="50" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-52.1000">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx50_knotty.svg" alt="idx 50 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx50_vienna.svg" alt="idx 50 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx50_derna.svg" alt="idx 50 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 50</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -52.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -52.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -51.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -51.4</span>
         <span class="aa">AA YTYKQDFPWKNGNAVIMLFHITMKEISYVDYFGDACFSVQIKHMGRKWCNRMTYFVLGAS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="48" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.8300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx48.svg" alt="idx 48"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="48" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-75.8300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx48_knotty.svg" alt="idx 48 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx48_vienna.svg" alt="idx 48 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx48_derna.svg" alt="idx 48 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 48</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -75.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -75.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 74 bp · MFE -75.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -75.4</span>
         <span class="aa">AA ITTHTQADPCCWLDECPIREKVPDRYGIRCTAWASRYGQRCYCCFMYGFDAFMQAAWCWV</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="53" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-75.0900">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx53.svg" alt="idx 53"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="53" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-75.0900">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx53_knotty.svg" alt="idx 53 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx53_vienna.svg" alt="idx 53 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx53_derna.svg" alt="idx 53 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 53</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -75.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -75.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -74.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -74.6</span>
         <span class="aa">AA FVCRAHHLRGECREGHAYGNQVESPMAGMNCPACWNIGTPILKYGWEWGQMYSWIGGEWG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="51" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.4700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx51.svg" alt="idx 51"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="51" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-67.4700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx51_knotty.svg" alt="idx 51 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx51_vienna.svg" alt="idx 51 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx51_derna.svg" alt="idx 51 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 51</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -67.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -67.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -67.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -67.5</span>
         <span class="aa">AA TREHFQWAGFQKTWLWRMAMMYIRWFGILIVCKKLGAIMAWAVWVCWYPRLAQDSSYINL</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="58" data-aalen="60" data-bp="68" data-pkbp="24" data-mfe="-62.7552">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx58.svg" alt="idx 58"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="58" data-aalen="60" data-bp="68" data-pkbp="24" data-mfe="-62.7552">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx58_knotty.svg" alt="idx 58 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx58_vienna.svg" alt="idx 58 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx58_derna.svg" alt="idx 58 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 58</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · 24 PK-bp · MFE -62.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · 24 PK-bp · MFE -62.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 65 bp · MFE -62.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 65 bp · MFE -62.7</span>
         <span class="aa">AA DRGCPCWRENKCQHGMFGGKFLPEPLAEMIYAEQENRCIMFDHHVGVTDFGINNMKHKFQ</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="57" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-67.7800">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx57.svg" alt="idx 57"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="57" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-67.7800">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx57_knotty.svg" alt="idx 57 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx57_vienna.svg" alt="idx 57 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx57_derna.svg" alt="idx 57 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 57</span>
-        <span class="meta">AA60 · 180 nt · 64 bp · MFE -67.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 64 bp · MFE -67.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -66.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -66.1</span>
         <span class="aa">AA NETTTTVPANVKACPGTQLSTPYSCVSEWMNMGNRESCNMSFCEMDCLLPMTHDCHRNLY</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="59" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-63.1100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx59.svg" alt="idx 59"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="59" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-63.1100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx59_knotty.svg" alt="idx 59 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx59_vienna.svg" alt="idx 59 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx59_derna.svg" alt="idx 59 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 59</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -63.1</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -63.1</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -62.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -63.3</span>
         <span class="aa">AA SSTKTLLGKFHNKWDLNLGQMDERQKSSTNRNLELHKVMETWMKWPVDYTALIHHVYQNF</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="60" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-74.3300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx60.svg" alt="idx 60"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="60" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-74.3300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx60_knotty.svg" alt="idx 60 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx60_vienna.svg" alt="idx 60 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx60_derna.svg" alt="idx 60 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 60</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -74.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -74.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -74.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -74.3</span>
         <span class="aa">AA YPEKQDMTLAGDCTQVGYGDELIVHMVCVCPAWNIVTSKGCENWNPQDQERIQDGFKPVV</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="62" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-70.3500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx62.svg" alt="idx 62"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="62" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-70.3500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx62_knotty.svg" alt="idx 62 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx62_vienna.svg" alt="idx 62 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx62_derna.svg" alt="idx 62 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 62</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -70.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -70.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -70.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -70.7</span>
         <span class="aa">AA NSGNTGEESVITEIQTIATDLWLLCFKEPTPWRAILFIQVNEWWTWKRTILKHGWPVAGT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="68" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-61.9400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx68.svg" alt="idx 68"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="68" data-aalen="60" data-bp="64" data-pkbp="0" data-mfe="-61.9400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx68_knotty.svg" alt="idx 68 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx68_vienna.svg" alt="idx 68 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx68_derna.svg" alt="idx 68 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 68</span>
-        <span class="meta">AA60 · 180 nt · 64 bp · MFE -61.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 64 bp · MFE -61.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -59.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -59.6</span>
         <span class="aa">AA TYYERFLDCHKIPVITPFIMPKKLFFFQVMTSTLRSIHNTFGLNRCFRVYWCDLFKGKRK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="65" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-63.3200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx65.svg" alt="idx 65"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="65" data-aalen="60" data-bp="69" data-pkbp="0" data-mfe="-63.3200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx65_knotty.svg" alt="idx 65 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx65_vienna.svg" alt="idx 65 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx65_derna.svg" alt="idx 65 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 65</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · MFE -63.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · MFE -63.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -62.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -62.1</span>
         <span class="aa">AA FFFGWGTAPEHSQNYYRGLGQVHQYWIGFGNDEDDEDQPHLNNPARKMLFAIAFPYRMYI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="66" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-58.9100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx66.svg" alt="idx 66"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="66" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-58.9100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx66_knotty.svg" alt="idx 66 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx66_vienna.svg" alt="idx 66 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx66_derna.svg" alt="idx 66 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 66</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -58.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -58.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -57.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -57.9</span>
         <span class="aa">AA RQHHNNTGDNYLAITVDIVPNCVCFKQRADQNSATMGVSCPIETWPYVLIWMSEKKNIHG</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="67" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-69.8000">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx67.svg" alt="idx 67"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="67" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-69.8000">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx67_knotty.svg" alt="idx 67 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx67_vienna.svg" alt="idx 67 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx67_derna.svg" alt="idx 67 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 67</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -69.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -69.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -69.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -69.8</span>
         <span class="aa">AA EGKLWRSIPWKHRLFDLATLANGTKSNACSNAAAILKRDAQGIMQMWLPDTMQSLKIIYS</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="63" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-59.7500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx63.svg" alt="idx 63"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="63" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-59.7500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx63_knotty.svg" alt="idx 63 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx63_vienna.svg" alt="idx 63 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx63_derna.svg" alt="idx 63 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 63</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -59.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -59.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -60.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 69 bp · MFE -60.4</span>
         <span class="aa">AA RHYQYYNDQAWGCALKFSFVWTCLACQGLEKTLTKWIQITKYIWRFCIGTVLLDKYKTYF</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="61" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.4400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx61.svg" alt="idx 61"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="61" data-aalen="60" data-bp="73" data-pkbp="0" data-mfe="-70.4400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx61_knotty.svg" alt="idx 61 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx61_vienna.svg" alt="idx 61 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx61_derna.svg" alt="idx 61 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 61</span>
-        <span class="meta">AA60 · 180 nt · 73 bp · MFE -70.4</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 73 bp · MFE -70.4</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 74 bp · MFE -70.6</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -70.6</span>
         <span class="aa">AA PGYTTPCVSVRFTRMCCVHGNYGGWQFWTFSGHLGDVDQDRPSRMPDQRGTDEIFMFDTP</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="69" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-75.6300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx69.svg" alt="idx 69"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="69" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-75.6300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx69_knotty.svg" alt="idx 69 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx69_vienna.svg" alt="idx 69 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx69_derna.svg" alt="idx 69 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 69</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -75.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -75.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -74.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 73 bp · MFE -74.2</span>
         <span class="aa">AA PWGFSPACRQDCAMQSSVYMGICAEVHQPIHHEPRAPRDWIFTLFTTQSFLYNWVWNPML</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="70" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-60.2100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx70.svg" alt="idx 70"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="70" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-60.2100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx70_knotty.svg" alt="idx 70 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx70_vienna.svg" alt="idx 70 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx70_derna.svg" alt="idx 70 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 70</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -60.2</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -60.2</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -61.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -61.0</span>
         <span class="aa">AA EHCIALDNLNHSPELYQAHDVLVIANMPFRCAGWMWNLMWSFQTSYIMWLVHNEFCRWQV</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="71" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-60.7400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx71.svg" alt="idx 71"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="71" data-aalen="60" data-bp="67" data-pkbp="0" data-mfe="-60.7400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx71_knotty.svg" alt="idx 71 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx71_vienna.svg" alt="idx 71 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx71_derna.svg" alt="idx 71 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 71</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · MFE -60.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · MFE -60.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -60.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -60.7</span>
         <span class="aa">AA REQSAHDGAVPHWHTSFKSYQQCEYYFKQIHNRWGTMCHAVDEYAKQSMASHNKAPNIMK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="72" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-66.7600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx72.svg" alt="idx 72"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="72" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-66.7600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx72_knotty.svg" alt="idx 72 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx72_vienna.svg" alt="idx 72 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx72_derna.svg" alt="idx 72 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 72</span>
-        <span class="meta">AA60 · 180 nt · 63 bp · MFE -66.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 63 bp · MFE -66.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -67.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 64 bp · MFE -67.8</span>
         <span class="aa">AA APFGMMVEPKYRHDNYVTSPGSCQFRWQEIFAIYAEISIKFRYVYKEHIHAVITAGMPQF</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="74" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.7600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx74.svg" alt="idx 74"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="74" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.7600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx74_knotty.svg" alt="idx 74 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx74_vienna.svg" alt="idx 74 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx74_derna.svg" alt="idx 74 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 74</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -65.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 71 bp · MFE -64.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -64.9</span>
         <span class="aa">AA FLLHCVIPRSFQLPPNRERRQDEKSFFVDKMEPQEPAPCISFQPMKWQQKDTYYNAMDWN</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="76" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-59.9200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx76.svg" alt="idx 76"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="76" data-aalen="60" data-bp="63" data-pkbp="0" data-mfe="-59.9200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx76_knotty.svg" alt="idx 76 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx76_vienna.svg" alt="idx 76 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx76_derna.svg" alt="idx 76 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 76</span>
-        <span class="meta">AA60 · 180 nt · 63 bp · MFE -59.9</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 63 bp · MFE -59.9</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 65 bp · MFE -59.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 65 bp · MFE -59.4</span>
         <span class="aa">AA NLEMMYSQQSWHDKASYLEQTHKHDSDFLTCAWHLMIIACCRATNKKWTFTQVLHPDRTT</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="81" data-aalen="60" data-bp="70" data-pkbp="9" data-mfe="-56.3185">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx81.svg" alt="idx 81"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="81" data-aalen="60" data-bp="70" data-pkbp="9" data-mfe="-56.3185">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx81_knotty.svg" alt="idx 81 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx81_vienna.svg" alt="idx 81 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx81_derna.svg" alt="idx 81 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 81</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · 9 PK-bp · MFE -56.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · 9 PK-bp · MFE -56.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -58.2</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -58.2</span>
         <span class="aa">AA TFWQNIIRKCHGMAHHPTQMTKIRIIAGVDNFDKWQWITCFRRSQAIKQIDAYWQGQVHY</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="75" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-56.5300">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx75.svg" alt="idx 75"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="75" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-56.5300">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx75_knotty.svg" alt="idx 75 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx75_vienna.svg" alt="idx 75 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx75_derna.svg" alt="idx 75 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 75</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -56.5</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -56.5</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -56.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -56.5</span>
         <span class="aa">AA TANWQTTAYTEDTQDRTFIAKATHNLIDWPNRELMDYTCRFSMMLNKIWHWNAHVMPMWP</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="79" data-aalen="60" data-bp="67" data-pkbp="30" data-mfe="-55.3473">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx79.svg" alt="idx 79"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="79" data-aalen="60" data-bp="67" data-pkbp="30" data-mfe="-55.3473">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx79_knotty.svg" alt="idx 79 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx79_vienna.svg" alt="idx 79 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx79_derna.svg" alt="idx 79 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 79</span>
-        <span class="meta">AA60 · 180 nt · 67 bp · 30 PK-bp · MFE -55.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 67 bp · 30 PK-bp · MFE -55.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 64 bp · MFE -54.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 64 bp · MFE -54.5</span>
         <span class="aa">AA WIMCITAPCHHHAGYQDAPIDHWTPHAFCAGTNLERWMSHSNVKKKYEKFYGYVCNHAAD</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="78" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-55.9600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx78.svg" alt="idx 78"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="78" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-55.9600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx78_knotty.svg" alt="idx 78 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx78_vienna.svg" alt="idx 78 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx78_derna.svg" alt="idx 78 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 78</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -56.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -56.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -55.9</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -55.9</span>
         <span class="aa">AA YHEKPEPGGCPNPVYPYMIENLERKFCYPHEFMFHWMYGRQKFSILWSNDHALSEKHFVP</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="80" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-57.5600">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx80.svg" alt="idx 80"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="80" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-57.5600">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx80_knotty.svg" alt="idx 80 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx80_vienna.svg" alt="idx 80 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx80_derna.svg" alt="idx 80 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 80</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -57.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -57.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -57.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -57.5</span>
         <span class="aa">AA KCCMVDVRGEGPFWQEETPRTHGFIKNGNQSTIHCWNTNFAYSFCLNLYVTTLNDTWAMI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="88" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-64.3700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx88.svg" alt="idx 88"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="88" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-64.3700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx88_knotty.svg" alt="idx 88 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx88_vienna.svg" alt="idx 88 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx88_derna.svg" alt="idx 88 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 88</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -64.4</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -64.4</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 68 bp · MFE -64.1</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 68 bp · MFE -64.1</span>
         <span class="aa">AA DQLGEYLNWRPNDICEMTDQEYSLSALVLMICVEKSTHSCEPFFELFFVMVQMLVDLSKK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="85" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-66.9700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx85.svg" alt="idx 85"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="85" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-66.9700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx85_knotty.svg" alt="idx 85 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx85_vienna.svg" alt="idx 85 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx85_derna.svg" alt="idx 85 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 85</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -67.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -67.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -66.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -66.3</span>
         <span class="aa">AA LQSRYCGVGFNCVRMCSTKLHEMIRTDSVLHYGCYSSTPVFGVRFPYFTCVLHAWMVPQK</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="94" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-62.5700">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx94.svg" alt="idx 94"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="94" data-aalen="60" data-bp="68" data-pkbp="0" data-mfe="-62.5700">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx94_knotty.svg" alt="idx 94 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx94_vienna.svg" alt="idx 94 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx94_derna.svg" alt="idx 94 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 94</span>
-        <span class="meta">AA60 · 180 nt · 68 bp · MFE -62.6</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 68 bp · MFE -62.6</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 69 bp · MFE -61.5</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 71 bp · MFE -60.6</span>
         <span class="aa">AA FNTYETPHGCTSVISEATHYFIGQKDISCLHVSANWYRGMNREYAQQVQCHDVWAYQLCI</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="77" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-54.4100">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx77.svg" alt="idx 77"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="77" data-aalen="60" data-bp="65" data-pkbp="0" data-mfe="-54.4100">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx77_knotty.svg" alt="idx 77 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx77_vienna.svg" alt="idx 77 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx77_derna.svg" alt="idx 77 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 77</span>
-        <span class="meta">AA60 · 180 nt · 65 bp · MFE -54.4</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 65 bp · MFE -54.4</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 65 bp · MFE -54.4</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 65 bp · MFE -54.4</span>
         <span class="aa">AA DCWCQMECEFMEECGQTDGEGFQRNIIWDEASCPELDVQSFFCTICIYLQAKAHDGYYLE</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="82" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.0500">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx82.svg" alt="idx 82"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="82" data-aalen="60" data-bp="70" data-pkbp="0" data-mfe="-65.0500">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx82_knotty.svg" alt="idx 82 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx82_vienna.svg" alt="idx 82 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx82_derna.svg" alt="idx 82 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 82</span>
-        <span class="meta">AA60 · 180 nt · 70 bp · MFE -65.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 70 bp · MFE -65.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 70 bp · MFE -65.0</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 70 bp · MFE -65.0</span>
         <span class="aa">AA LGMACIWECVATWKEPALHFHLDIQWVSNQAWTPFETVFTKPKYTRSHWTEVDMAMNDLC</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="92" data-aalen="60" data-bp="69" data-pkbp="32" data-mfe="-58.9709">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx92.svg" alt="idx 92"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="92" data-aalen="60" data-bp="69" data-pkbp="32" data-mfe="-58.9709">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx92_knotty.svg" alt="idx 92 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx92_vienna.svg" alt="idx 92 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx92_derna.svg" alt="idx 92 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 92</span>
-        <span class="meta">AA60 · 180 nt · 69 bp · 32 PK-bp · MFE -59.0</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 69 bp · 32 PK-bp · MFE -59.0</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 67 bp · MFE -58.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 67 bp · MFE -58.8</span>
         <span class="aa">AA FRMVRVQRHGATQTNCNAFWFRLMTCKFIVHNMFGVFHVSKHYMVIYYVEVRFKSVEFSK</span>
       </figcaption>
       <span class="badge pk">PK</span>
     </figure>
-    <figure class="card" data-idx="86" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-65.7000">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx86.svg" alt="idx 86"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="86" data-aalen="60" data-bp="71" data-pkbp="0" data-mfe="-65.7000">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx86_knotty.svg" alt="idx 86 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx86_vienna.svg" alt="idx 86 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx86_derna.svg" alt="idx 86 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 86</span>
-        <span class="meta">AA60 · 180 nt · 71 bp · MFE -65.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 71 bp · MFE -65.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 72 bp · MFE -65.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 72 bp · MFE -65.3</span>
         <span class="aa">AA SWTTNYFDPIVSRMYRYAPCMIDQGWKNMGPHLFGSWRWMHCDAMKGQCWFASLPLQRWC</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="90" data-aalen="60" data-bp="74" data-pkbp="0" data-mfe="-70.7400">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx90.svg" alt="idx 90"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="90" data-aalen="60" data-bp="74" data-pkbp="0" data-mfe="-70.7400">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx90_knotty.svg" alt="idx 90 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx90_vienna.svg" alt="idx 90 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx90_derna.svg" alt="idx 90 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 90</span>
-        <span class="meta">AA60 · 180 nt · 74 bp · MFE -70.7</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 74 bp · MFE -70.7</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 74 bp · MFE -70.7</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -70.7</span>
         <span class="aa">AA PTSVCGAQWMAARYFVAEKLMRMCLQIHGFANFCPCASLQFANWMFTLRCESWQSACIDL</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="93" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-64.8000">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx93.svg" alt="idx 93"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="93" data-aalen="60" data-bp="72" data-pkbp="0" data-mfe="-64.8000">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx93_knotty.svg" alt="idx 93 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx93_vienna.svg" alt="idx 93 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx93_derna.svg" alt="idx 93 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 93</span>
-        <span class="meta">AA60 · 180 nt · 72 bp · MFE -64.8</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 72 bp · MFE -64.8</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 73 bp · MFE -64.8</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 74 bp · MFE -64.8</span>
         <span class="aa">AA HSTLMNLVMLWSLSDQRVAMGDMFPWCSGIETMTANVFYQFMEKNNMDQRNRWLMLCLIA</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
     </figure>
-    <figure class="card" data-idx="96" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-61.3200">
-      <div class="fornac"><img loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx96.svg" alt="idx 96"></div>
+    <figure class="card sw" data-mode="knotty" data-idx="96" data-aalen="60" data-bp="66" data-pkbp="0" data-mfe="-61.3200">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac"><img class="s-knotty" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx96_knotty.svg" alt="idx 96 Knotty"><img class="s-vienna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx96_vienna.svg" alt="idx 96 ViennaRNA"><img class="s-derna" loading="lazy" width="320" height="280" src="aa60_100_assets/aa60_idx96_derna.svg" alt="idx 96 DeRNA initial"></div>
       <figcaption>
         <span class="title">idx 96</span>
-        <span class="meta">AA60 · 180 nt · 66 bp · MFE -61.3</span>
+        <span class="meta m-knotty">Knotty: AA60 · 180 nt · 66 bp · MFE -61.3</span>
+        <span class="meta m-vienna">ViennaRNA: AA60 · 180 nt · 66 bp · MFE -61.3</span>
+        <span class="meta m-derna">DeRNA: AA60 · 180 nt · 66 bp · MFE -61.3</span>
         <span class="aa">AA TVEPTCMYPSEELGVCGYFKPQYVQGHHCKCGMVWFNMHDYPWWECAFFFQFHEEWLSNN</span>
       </figcaption>
       <span class="badge nonpk">Non-PK</span>
@@ -972,6 +1814,60 @@
     aaBtn.textContent = hidden ? "Show AA seq" : "Hide AA seq";
     aaBtn.classList.toggle("active", hidden);
   });
+})();
+(function () {
+  const grid = document.querySelector(".grid");
+  if (!grid) return;
+  const LABELS = { knotty: "Knotty", vienna: "ViennaRNA", derna: "DeRNA initial" };
+
+  function setMode(card, mode) {
+    card.dataset.mode = mode;
+    card.querySelectorAll(".topcap .mbtn").forEach(
+      (b) => b.classList.toggle("active", b.dataset.mode === mode));
+  }
+
+  // Compare modal (one shared element, populated per card on open).
+  const modal = document.getElementById("cmp-modal");
+  const cbox = modal ? modal.querySelector(".cmp-grid") : null;
+  const ctitle = modal ? modal.querySelector("h2") : null;
+  const csub = modal ? modal.querySelector(".sub") : null;
+  function openCompare(card) {
+    if (!modal) return;
+    ctitle.textContent = card.querySelector(".title").textContent;
+    csub.textContent = "AA" + card.dataset.aalen + " · Knotty vs ViennaRNA vs DeRNA initial fold";
+    const cell = (mode) => {
+      const img = card.querySelector(".s-" + mode);
+      const meta = card.querySelector(".m-" + mode);
+      return '<div class="cmp-cell"><h3>' + LABELS[mode] + '</h3>' +
+             '<img src="' + img.getAttribute("src") + '" alt="' + LABELS[mode] + '">' +
+             '<div class="cmeta">' + (meta ? meta.textContent : "") + '</div></div>';
+    };
+    cbox.innerHTML = cell("knotty") + cell("vienna") + cell("derna");
+    modal.classList.add("open");
+  }
+  function closeCompare() { if (modal) modal.classList.remove("open"); }
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal || e.target.classList.contains("cmp-close")) closeCompare();
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCompare(); });
+  }
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".topcap .mbtn");
+    if (!btn) return;
+    const card = btn.closest(".card.sw");
+    if (btn.dataset.mode === "compare") openCompare(card);
+    else setMode(card, btn.dataset.mode);
+  });
+
+  // Page toolbar: set the same mode on every card.
+  document.querySelectorAll(".sortbar .allmode").forEach((b) =>
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".card.sw").forEach((c) => setMode(c, b.dataset.mode));
+      document.querySelectorAll(".sortbar .allmode").forEach(
+        (x) => x.classList.toggle("active", x === b));
+    }));
 })();
 </script>
 </body>

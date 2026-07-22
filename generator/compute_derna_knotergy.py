@@ -45,11 +45,15 @@ def main() -> int:
     out = {}
     errors = {}
     t0 = time.time()
+    # Key by "aa_len_idx" when aa_len is present (idx alone collides across AA lengths in
+    # mixed-length catalogs, e.g. all-PK); plain "idx" otherwise. The generator tries the
+    # composite key first, then falls back to plain idx.
     for i, r in enumerate(rows):
+        key = f"{r['aa_len']}_{r['idx']}" if "aa_len" in r else str(r["idx"])
         try:
-            out[str(r["idx"])] = knotergy(r["seq"], r["db"], args.params)
+            out[key] = knotergy(r["seq"], r["db"], args.params)
         except Exception as exc:  # keep going; record failures
-            errors[str(r["idx"])] = f"{type(exc).__name__}: {exc}"[:200]
+            errors[key] = f"{type(exc).__name__}: {exc}"[:200]
         if (i + 1) % 100 == 0:
             print(f"  [{i+1}/{len(rows)}] {time.time()-t0:.1f}s", flush=True)
     json.dump({"energies": out, "errors": errors,

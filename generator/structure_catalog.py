@@ -743,9 +743,18 @@ def run_forna_prerender(entries: List[Dict], jobs: int = 1):
 
     svgs = [None] * len(payload)
     css = ""
+    n_failed = 0
     for p, sh, in_path, out_path in procs:
         p.wait()
         try:
+            # A shard can die (e.g. Chrome CDP timeout) without writing its out.json. Don't
+            # let that discard every other shard's work — leave those indices None (the
+            # caller can reuse an existing SVG or re-render just the gaps) and report it.
+            if not os.path.exists(out_path):
+                n_failed += len(sh)
+                print(f"  [forna] WARNING: shard of {len(sh)} items produced no output "
+                      f"(rc={p.returncode}); leaving them unrendered", flush=True)
+                continue
             data = json.loads(open(out_path).read())
             for local_i, gi in enumerate(sh):
                 svgs[gi] = data["svgs"][local_i] if local_i < len(data["svgs"]) else None
@@ -756,6 +765,8 @@ def run_forna_prerender(entries: List[Dict], jobs: int = 1):
                     os.unlink(q)
                 except OSError:
                     pass
+    if n_failed:
+        print(f"  [forna] {n_failed}/{len(payload)} structures failed to render this pass", flush=True)
     return css, svgs
 
 
@@ -1199,7 +1210,8 @@ def main() -> None:
         derna_mfe = derna_mfe.get("energies", derna_mfe)  # accept the compute script's wrapper
         n_hit = 0
         for e in entries:
-            v = derna_mfe.get(str(e["idx"]))
+            # composite "aa_len_idx" key (unique across AA lengths); fall back to plain idx
+            v = derna_mfe.get(f"{e.get('aa_len', 0)}_{e['idx']}", derna_mfe.get(str(e["idx"])))
             if v is not None:
                 e["derna_mfe"] = float(v)
                 n_hit += 1
@@ -1222,7 +1234,10 @@ def main() -> None:
             _, dst = _assets_dir_for(args.out)
             n_copied = 0
             for src in glob.glob(os.path.join(args.reuse_assets_from, "*.svg")):
-                shutil.copy2(src, dst)
+                tgt = os.path.join(dst, os.path.basename(src))
+                if os.path.abspath(src) == os.path.abspath(tgt):
+                    continue  # reuse dir IS the output dir (in-place incremental) — nothing to copy
+                shutil.copy2(src, tgt)
                 n_copied += 1
             print(f"  switch: reused {n_copied} existing SVG files from {args.reuse_assets_from}")
         render_set = {f.strip() for f in args.switch_render.split(",") if f.strip()}

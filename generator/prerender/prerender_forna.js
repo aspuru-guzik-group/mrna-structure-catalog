@@ -33,7 +33,13 @@ function resolveChrome() {
 async function main() {
   const [, , inPath, outPath] = process.argv;
   const entries = JSON.parse(fs.readFileSync(inPath, "utf8"));
-  const browser = await puppeteer.launch({ headless: true, executablePath: resolveChrome(), args: ["--no-sandbox"] });
+  // protocolTimeout 0 = no CDP timeout: under heavy multi-shard load Chrome's CDP replies
+  // can exceed the 180s default, which otherwise crashes the shard ("Network.enable timed out").
+  const browser = await puppeteer.launch({
+    headless: true, executablePath: resolveChrome(),
+    args: ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+    protocolTimeout: 0,
+  });
   try {
     const page = await browser.newPage();
     await page.setContent(`<!DOCTYPE html><html><head></head><body><div id="s" style="width:${W}px;height:${H}px"></div></body></html>`);
