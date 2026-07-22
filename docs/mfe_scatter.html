@@ -52,7 +52,7 @@ figcaption { padding: 6px 12px 12px; }
 </head>
 <body>
 <h1>mRNA MFE scatter catalog — Knotty / ViennaRNA / DeRNA</h1>
-<p class="note"><a class="back" href="index.html">← catalog home</a><br>Pairwise Knotergy-MFE scatter plots of the three folds. Each card switches between the pairings and Compare (all three); the toolbar toggles PK-mixed vs PK-only. All energies are Knotergy (Dirks-Pierce09, kcal/mol): Knotty=e_pk, ViennaRNA=e_nested, DeRNA computed. Dashed line = y=x (equal energy).</p>
+<p class="note"><a class="back" href="index.html">← catalog home</a><br>Pairwise Knotergy-MFE scatter plots of the three folds. Each card switches between the pairings and Compare (all three); the toolbar toggles PK-mixed vs PK-only. All energies are Knotergy (Dirks-Pierce09, kcal/mol): Knotty=e_pk, ViennaRNA=e_nested, DeRNA computed. Red dashed line = y=x (equal energy); arrows mark the region where each fold reaches the lower (more stable) energy, with the majority region emphasised.</p>
 <div class="toolbar">Population:
   <span class="seg"><button class="tbtn active" data-pk="mixed">PK-mixed</button><button class="tbtn" data-pk="only">PK-only</button></span>
   <span class="legend"><span><span class="dot" style="background:#2b6cb0"></span>non-PK</span><span><span class="dot" style="background:#e8833a"></span>PK</span></span>
@@ -154,9 +154,8 @@ function scatterSVG(pop, cmpKey, w, h, small) {
   const parts = [`<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Helvetica,Arial,sans-serif">`];
   // plot frame
   parts.push(`<rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="#fff" stroke="#e6e6e6"/>`);
-  // y=x reference line (recessive dashed)
-  const d0 = Math.max(lo, lo), d1 = Math.min(hi, hi);
-  parts.push(`<line x1="${sx(lo).toFixed(1)}" y1="${sy(lo).toFixed(1)}" x2="${sx(hi).toFixed(1)}" y2="${sy(hi).toFixed(1)}" stroke="#bbb" stroke-width="1" stroke-dasharray="4 3"/>`);
+  // y=x reference line = equal energy (red dashed, per the reference technique)
+  parts.push(`<line x1="${sx(lo).toFixed(1)}" y1="${sy(lo).toFixed(1)}" x2="${sx(hi).toFixed(1)}" y2="${sy(hi).toFixed(1)}" stroke="#d9534f" stroke-width="1.3" stroke-dasharray="5 4" stroke-opacity="0.85"/>`);
   // ticks (lo / mid / hi)
   const fmt = v => v.toFixed(0);
   const mid = (lo + hi) / 2;
@@ -175,6 +174,31 @@ function scatterSVG(pop, cmpKey, w, h, small) {
   for (const p of order) {
     const col = p[3] ? COL.pk : COL.nonpk;
     parts.push(`<circle cx="${sx(p[c.x]).toFixed(1)}" cy="${sy(p[c.y]).toFixed(1)}" r="${r}" fill="${col}" fill-opacity="${op}" stroke="${col}" stroke-width="0.5" data-x="${p[c.x]}" data-y="${p[c.y]}" data-idx="${p[4]}" data-aa="${p[5]}" data-xl="${c.xl}" data-yl="${c.yl}"/>`);
+  }
+  // Directional annotations: a point above y=x has y>x, i.e. fold-X reached the lower
+  // (more negative = more stable) energy → upper-left region = "X more stable"; below the
+  // line = "Y more stable". Emphasise (bold + underline) whichever region holds more points.
+  if (pts.length >= 5) {
+    let winX = 0, winY = 0;
+    for (const p of pts) { if (p[c.x] < p[c.y]) winX++; else if (p[c.y] < p[c.x]) winY++; }
+    const EMPH = "#be185d", MUT = "#7c8794";
+    const xWins = winX >= winY;
+    const arrow = (x1, y1, x2, y2, col, wd) => {
+      const a = Math.atan2(y2 - y1, x2 - x1), hl = 6 + wd, hw = 3 + wd * 0.7;
+      const bx = x2 - hl * Math.cos(a), by = y2 - hl * Math.sin(a);
+      return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${bx.toFixed(1)}" y2="${by.toFixed(1)}" stroke="${col}" stroke-width="${wd}" stroke-linecap="round"/>` +
+             `<polygon points="${x2.toFixed(1)},${y2.toFixed(1)} ${(bx - hw*Math.sin(a)).toFixed(1)},${(by + hw*Math.cos(a)).toFixed(1)} ${(bx + hw*Math.sin(a)).toFixed(1)},${(by - hw*Math.cos(a)).toFixed(1)}" fill="${col}"/>`;
+    };
+    const label = (x, y, txt, col, bold, anchor) =>
+      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${small?9:11}" text-anchor="${anchor}" fill="${col}" ` +
+      `font-weight="${bold?700:600}" ${bold?'text-decoration="underline"':''} stroke="#fff" stroke-width="3" ` +
+      `paint-order="stroke" style="stroke-linejoin:round">${txt}</text>`;
+    // upper-left: X more stable
+    parts.push(arrow(m.l+pw*0.30, m.t+ph*0.30, m.l+pw*0.13, m.t+ph*0.13, xWins?EMPH:MUT, xWins?3:2));
+    parts.push(label(m.l+pw*0.05, m.t+ph*0.10, `${c.xl} more stable`, xWins?EMPH:MUT, xWins, "start"));
+    // lower-right: Y more stable
+    parts.push(arrow(m.l+pw*0.70, m.t+ph*0.70, m.l+pw*0.87, m.t+ph*0.87, xWins?MUT:EMPH, xWins?2:3));
+    parts.push(label(m.l+pw*0.95, m.t+ph*0.94, `${c.yl} more stable`, xWins?MUT:EMPH, !xWins, "end"));
   }
   parts.push(`</svg>`);
   return parts.join("");
