@@ -244,12 +244,19 @@ STATIC_CARD_TEMPLATE = """    <figure class="card" data-idx="{idx}" data-aalen="
       <span class="badge {pk_class}">{pk_label}</span>
     </figure>"""
 
-SWITCH_CARD_TEMPLATE = """    <figure class="card switch" data-idx="{idx}" data-aalen="{aalen}" data-bp="{bp}" data-pkbp="{pkbp}" data-mfe="{mfe}">
-      <div class="fornac">{inner}<span class="whichtag"><span class="lab-knotty">Knotty</span><span class="lab-derna">DeRNA initial</span>{same}</span></div>
+SWITCH_CARD_TEMPLATE = """    <figure class="card sw" data-mode="knotty" data-idx="{idx}" data-aalen="{aalen}" data-bp="{bp}" data-pkbp="{pkbp}" data-mfe="{mfe}">
+      <figcaption class="topcap">
+        <button class="mbtn active" data-mode="knotty">Knotty</button>
+        <button class="mbtn" data-mode="vienna">ViennaRNA</button>
+        <button class="mbtn" data-mode="derna">DeRNA</button>
+        <button class="mbtn cmp" data-mode="compare">Compare</button>
+      </figcaption>
+      <div class="fornac">{inner}</div>
       <figcaption>
         <span class="title">{title}</span>
-        <span class="meta meta-knotty">{meta_knotty}</span>
-        <span class="meta meta-derna">{meta_derna}</span>
+        <span class="meta m-knotty">{meta_knotty}</span>
+        <span class="meta m-vienna">{meta_vienna}</span>
+        <span class="meta m-derna">{meta_derna}</span>
         <span class="aa">{aa}</span>
       </figcaption>
       <span class="badge {pk_class}">{pk_label}</span>
@@ -292,24 +299,44 @@ _STATIC_PAGE_CSS = """\
   .fornac .lay-on { display: none; }
   body.force-on .fornac .lay-off { display: none; }
   body.force-on .fornac .lay-on { display: block; }
-  /* Switch (per-card click): Knotty shown by default, DeRNA-initial when card.show-derna */
-  .card.switch { cursor: pointer; }
-  .card.switch .fornac { position: relative; }
-  .card.switch .struct-derna { display: none; }
-  .card.switch.show-derna .struct-knotty { display: none; }
-  .card.switch.show-derna .struct-derna { display: block; }
-  /* corner tag naming the currently-shown fold; flips with the card */
-  .whichtag { position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 10px;
-              font-size: 11px; font-weight: 700; letter-spacing: 0.3px; pointer-events: none;
-              background: #e7e0f7; color: #5b3ea8; border: 1px solid #c9bced; }
-  .card.show-derna .whichtag { background: #dcefff; color: #0b5cab; border-color: #a9d2f5; }
-  .card.switch .whichtag .lab-derna,
-  .card.switch.show-derna .whichtag .lab-knotty { display: none; }
-  .card.switch.show-derna .whichtag .lab-derna { display: inline; }
-  .card .whichtag .same { color: #888; font-weight: 500; }
-  .card.switch .meta-derna { display: none; }
-  .card.switch.show-derna .meta-knotty { display: none; }
-  .card.switch.show-derna .meta-derna { display: block; }
+  /* Switch cards: a top caption bar of mode buttons [Knotty|ViennaRNA|DeRNA|Compare]
+     picks which fold the card shows; the current mode is highlighted. */
+  .topcap { display: flex; gap: 4px; padding: 6px 8px; border-bottom: 1px solid #f0f0f0;
+            background: #fafafa; flex-wrap: wrap; align-items: center; }
+  .mbtn { padding: 2px 8px; border: 1px solid #d3d3d3; background: #fff; border-radius: 6px;
+          cursor: pointer; font-size: 11px; font-weight: 600; color: #555; line-height: 1.6; }
+  .mbtn:hover { background: #f0f0f0; }
+  .mbtn.active { background: #d8ebff; border-color: #9cc8f0; color: #0b5cab; }
+  .mbtn.cmp { margin-left: auto; color: #5b3ea8; }
+  .mbtn.cmp:hover { background: #efe9fb; }
+  /* one <img> per fold; show only the img matching the card's current data-mode */
+  .card.sw .fornac img { display: none; }
+  .card.sw[data-mode="knotty"] .s-knotty { display: block; }
+  .card.sw[data-mode="vienna"] .s-vienna { display: block; }
+  .card.sw[data-mode="derna"]  .s-derna  { display: block; }
+  /* one meta line per fold; show only the active one */
+  .card.sw .meta { display: none; }
+  .card.sw[data-mode="knotty"] .m-knotty { display: block; }
+  .card.sw[data-mode="vienna"] .m-vienna { display: block; }
+  .card.sw[data-mode="derna"]  .m-derna  { display: block; }
+  .card.sw .meta .same { color: #888; font-weight: 400; }
+  /* Compare popup: a modal showing all three folds of one structure side by side. */
+  .cmp-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 100;
+               display: none; align-items: center; justify-content: center; padding: 24px; }
+  .cmp-modal.open { display: flex; }
+  .cmp-box { background: #fff; border-radius: 10px; max-width: 1080px; width: 100%;
+             max-height: 92vh; overflow: auto; padding: 18px 20px 22px; }
+  .cmp-box h2 { font-size: 16px; margin: 0 0 2px; }
+  .cmp-box .sub { color: #777; font-size: 12px; margin: 0 0 14px; }
+  .cmp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .cmp-cell { border: 1px solid #eee; border-radius: 8px; overflow: hidden; }
+  .cmp-cell h3 { font-size: 13px; margin: 0; padding: 7px 10px; background: #fafafa;
+                 border-bottom: 1px solid #f0f0f0; }
+  .cmp-cell .cmeta { font-size: 11px; color: #666; padding: 6px 10px 0; }
+  .cmp-cell img { display: block; width: 100%; height: 300px; object-fit: contain; }
+  .cmp-close { float: right; border: 1px solid #ccc; background: #fff; border-radius: 6px;
+               cursor: pointer; font-size: 13px; padding: 3px 10px; }
+  @media (max-width: 720px) { .cmp-grid { grid-template-columns: 1fr; } }
 """
 
 # Client-side sort (DOM reorder only — no re-render). Plain string; no interpolation.
@@ -362,27 +389,63 @@ _COMPARE_JS = """\
 })();
 """
 
-# Per-card click toggles between the Knotty fold (default) and DeRNA's initial fold.
-# Event-delegated on the grid; a click that produced a text selection (e.g. dragging over
-# the AA sequence) is ignored so selecting text never flips the card.
+# Top-caption mode buttons per card: Knotty | ViennaRNA | DeRNA switch the shown fold
+# (current mode highlighted); Compare opens a modal with all three folds side by side.
+# A page toolbar sets the mode for every card at once. All DOM/CSS — no live layout.
 _SWITCH_JS = """\
 (function () {
   const grid = document.querySelector(".grid");
   if (!grid) return;
+  const LABELS = { knotty: "Knotty", vienna: "ViennaRNA", derna: "DeRNA initial" };
+
+  function setMode(card, mode) {
+    card.dataset.mode = mode;
+    card.querySelectorAll(".topcap .mbtn").forEach(
+      (b) => b.classList.toggle("active", b.dataset.mode === mode));
+  }
+
+  // Compare modal (one shared element, populated per card on open).
+  const modal = document.getElementById("cmp-modal");
+  const cbox = modal ? modal.querySelector(".cmp-grid") : null;
+  const ctitle = modal ? modal.querySelector("h2") : null;
+  const csub = modal ? modal.querySelector(".sub") : null;
+  function openCompare(card) {
+    if (!modal) return;
+    ctitle.textContent = card.querySelector(".title").textContent;
+    csub.textContent = "AA" + card.dataset.aalen + " · Knotty vs ViennaRNA vs DeRNA initial fold";
+    const cell = (mode) => {
+      const img = card.querySelector(".s-" + mode);
+      const meta = card.querySelector(".m-" + mode);
+      return '<div class="cmp-cell"><h3>' + LABELS[mode] + '</h3>' +
+             '<img src="' + img.getAttribute("src") + '" alt="' + LABELS[mode] + '">' +
+             '<div class="cmeta">' + (meta ? meta.textContent : "") + '</div></div>';
+    };
+    cbox.innerHTML = cell("knotty") + cell("vienna") + cell("derna");
+    modal.classList.add("open");
+  }
+  function closeCompare() { if (modal) modal.classList.remove("open"); }
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal || e.target.classList.contains("cmp-close")) closeCompare();
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCompare(); });
+  }
+
   grid.addEventListener("click", (e) => {
-    const sel = window.getSelection();
-    if (sel && sel.type === "Range" && String(sel).length) return;
-    const card = e.target.closest(".card.switch");
-    if (card) card.classList.toggle("show-derna");
+    const btn = e.target.closest(".topcap .mbtn");
+    if (!btn) return;
+    const card = btn.closest(".card.sw");
+    if (btn.dataset.mode === "compare") openCompare(card);
+    else setMode(card, btn.dataset.mode);
   });
-  const all = document.getElementById("switch-all");
-  if (all) all.addEventListener("click", () => {
-    const on = document.body.classList.toggle("all-derna");
-    document.querySelectorAll(".card.switch")
-      .forEach((c) => c.classList.toggle("show-derna", on));
-    all.textContent = on ? "Show all: Knotty" : "Show all: DeRNA initial";
-    all.classList.toggle("active", on);
-  });
+
+  // Page toolbar: set the same mode on every card.
+  document.querySelectorAll(".sortbar .allmode").forEach((b) =>
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".card.sw").forEach((c) => setMode(c, b.dataset.mode));
+      document.querySelectorAll(".sortbar .allmode").forEach(
+        (x) => x.classList.toggle("active", x === b));
+    }));
 })();
 """
 
@@ -827,57 +890,87 @@ def build_img_compare_html(entries, title, fornac_css, svgs_off, svgs_on, out_pa
                         controls_html=controls, extra_js=_COMPARE_JS)
 
 
+_FOLD_STRUCT_KEY = {"knotty": "structure", "vienna": "vienna_structure", "derna": "derna_structure"}
+_FOLD_MFE_KEY = {"knotty": "mfe", "vienna": "vienna_mfe", "derna": "derna_mfe"}
+_FOLD_LABEL = {"knotty": "Knotty", "vienna": "ViennaRNA", "derna": "DeRNA"}
+
+
 def _switch_meta(entry, which: str) -> str:
-    """Caption line for one fold of a switch card ('knotty' or 'derna')."""
-    struct = entry["structure"] if which == "knotty" else entry["derna_structure"]
-    stats = structure_stats(struct)
+    """Caption line for one fold of a switch card: 'knotty', 'vienna', or 'derna'.
+
+    MFEs are all Knotergy energies (kcal/mol) of that fold, so the three are comparable:
+    Knotty ``e_pk``, ViennaRNA ``e_nested``, DeRNA computed via compute_derna_knotergy.py.
+    """
+    stats = structure_stats(entry[_FOLD_STRUCT_KEY[which]])
     parts = [f"AA{entry['aa_len']}"] if entry.get("aa_len") else []
     parts += [f"{stats['length']} nt", f"{stats['pairs']} bp"]
-    if which == "knotty":
-        if entry["pk"]:
-            parts.append(f"{stats['pk_pairs']} PK-bp")
-        if entry.get("mfe") is not None:
-            parts.append(f"MFE {entry['mfe']:.1f}")
-        label = "Knotty:"
-    else:
-        label = "DeRNA:"
-    return f"{label} " + " · ".join(parts)
+    if which == "knotty" and entry["pk"]:
+        parts.append(f"{stats['pk_pairs']} PK-bp")
+    mfe = entry.get(_FOLD_MFE_KEY[which])
+    if mfe is not None:
+        parts.append(f"MFE {mfe:.1f}")
+    return f"{_FOLD_LABEL[which]}: " + " · ".join(parts)
 
 
-def build_img_switch_html(entries, title, fornac_css, svgs_knotty, svgs_derna, out_path: str) -> str:
-    """Switchable catalog: bake BOTH the Knotty fold and DeRNA's initial fold per structure;
-    clicking a card flips it between them (DOM/CSS only — instant, no live layout). A header
-    button flips every card at once."""
+# Page-level controls for the switch catalog: a "set all cards" mode toolbar + the shared
+# Compare modal (position:fixed, so its DOM location is irrelevant). Plain string.
+_SWITCH_CONTROLS = """\
+<div class="sortbar">All cards:
+  <button class="mbtn allmode active" data-mode="knotty">Knotty</button>
+  <button class="mbtn allmode" data-mode="vienna">ViennaRNA</button>
+  <button class="mbtn allmode" data-mode="derna">DeRNA</button>
+</div>
+<div id="cmp-modal" class="cmp-modal">
+  <div class="cmp-box">
+    <button class="cmp-close">Close ✕</button>
+    <h2></h2><p class="sub"></p>
+    <div class="cmp-grid"></div>
+  </div>
+</div>
+"""
+
+
+def build_img_switch_html(entries, title, fornac_css, svgs_knotty, svgs_vienna, svgs_derna,
+                          out_path: str) -> str:
+    """Switchable catalog. Each card has a top-caption bar [Knotty | ViennaRNA | DeRNA |
+    Compare]: the first three swap which fold the card shows (current mode highlighted);
+    Compare opens a modal with all three side by side. All DOM/CSS — no live layout.
+    Each fold is a separately-rendered SVG; all three MFEs are Knotergy energies.
+    A per-fold svg of ``None`` is not written — the existing file in the assets dir is
+    reused, so a fold whose SVGs are unchanged can be skipped (incremental re-render)."""
     assets_dirname, assets_dir = _assets_dir_for(out_path)
     style_tag = f"<style>{fornac_css}</style>"
     cards = []
-    for e, svg_k, svg_d in zip(entries, svgs_knotty, svgs_derna):
+    for e, svg_k, svg_v, svg_d in zip(entries, svgs_knotty, svgs_vienna, svgs_derna):
         stem = f"aa{e.get('aa_len', 0)}_idx{e['idx']}"
-        f_k, f_d = f"{stem}_knotty.svg", f"{stem}_derna.svg"
-        _write_standalone_svg(assets_dir, f_k, svg_k, style_tag)
-        _write_standalone_svg(assets_dir, f_d, svg_d, style_tag)
+        f_k, f_v, f_d = f"{stem}_knotty.svg", f"{stem}_vienna.svg", f"{stem}_derna.svg"
+        for fname, svg in ((f_k, svg_k), (f_v, svg_v), (f_d, svg_d)):
+            if svg is not None:  # None -> reuse the existing on-disk file
+                _write_standalone_svg(assets_dir, fname, svg, style_tag)
+        d = assets_dirname
         inner = (
-            f'<img class="struct-knotty" loading="lazy" width="320" height="280" src="{assets_dirname}/{f_k}" alt="idx {e["idx"]} Knotty">'
-            f'<img class="struct-derna" loading="lazy" width="320" height="280" src="{assets_dirname}/{f_d}" alt="idx {e["idx"]} DeRNA initial">'
+            f'<img class="s-knotty" loading="lazy" width="320" height="280" src="{d}/{f_k}" alt="idx {e["idx"]} Knotty">'
+            f'<img class="s-vienna" loading="lazy" width="320" height="280" src="{d}/{f_v}" alt="idx {e["idx"]} ViennaRNA">'
+            f'<img class="s-derna" loading="lazy" width="320" height="280" src="{d}/{f_d}" alt="idx {e["idx"]} DeRNA initial">'
         )
-        same = '<span class="same"> ≡ same</span>' if e["structure"] == e["derna_structure"] else ""
         cards.append(SWITCH_CARD_TEMPLATE.format(
             inner=inner, idx=e["idx"], aalen=e.get("aa_len", 0), bp=e["bp"],
             pkbp=e["pk_pairs"], mfe="" if e.get("mfe") is None else f"{e['mfe']:.4f}",
             title=html.escape(e["title"]),
             meta_knotty=html.escape(_switch_meta(e, "knotty")),
+            meta_vienna=html.escape(_switch_meta(e, "vienna")),
             meta_derna=html.escape(_switch_meta(e, "derna")),
             aa="AA " + html.escape(e.get("aa", "")),
             pk_class="pk" if e["pk"] else "nonpk",
             pk_label="PK" if e["pk"] else "Non-PK",
-            same=same,
         ))
-    n_diff = sum(1 for e in entries if e["structure"] != e["derna_structure"])
-    controls = '<button id="switch-all" class="force-toggle">Show all: DeRNA initial</button>\n'
-    note = (f"{len(entries)} entries · click a card to switch between the Knotty fold and "
-            f"DeRNA's initial fold ({n_diff} differ) · ./{assets_dirname}/")
+    n_kd = sum(1 for e in entries if e["structure"] != e["derna_structure"])
+    n_kv = sum(1 for e in entries if e["structure"] != e["vienna_structure"])
+    note = (f"{len(entries)} entries · per-card top bar switches Knotty / ViennaRNA / DeRNA "
+            f"folds; Compare shows all three (Knotty differs from DeRNA in {n_kd}, from "
+            f"ViennaRNA in {n_kv}). All MFEs are Knotergy energies. · ./{assets_dirname}/")
     return _static_page(title, note, "", "\n".join(cards),
-                        controls_html=controls, extra_js=_SWITCH_JS)
+                        controls_html=_SWITCH_CONTROLS, extra_js=_SWITCH_JS)
 
 
 def load_npy_rows(path: str, protein_len: int) -> List[Dict]:
@@ -900,13 +993,16 @@ def load_npy_rows(path: str, protein_len: int) -> List[Dict]:
 
 
 def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: str,
-                      derna_col: str = None) -> List[Dict]:
+                      derna_col: str = None, vienna_col: str = None,
+                      vienna_mfe_col: str = None) -> List[Dict]:
     """Load a per-sample profiling parquet (e.g. issue #47 pk_profile.parquet) into rows.
 
     Uses the dataset's own PK flag (``pk_col``, e.g. ``has_pk``) as the authoritative
-    label rather than re-deriving it from the bracket string. When ``derna_col`` names an
-    existing column (DeRNA's initial fold), each row also carries ``derna_structure`` for
-    the switch catalog.
+    label rather than re-deriving it from the bracket string. When ``derna_col`` /
+    ``vienna_col`` name existing columns (DeRNA's / ViennaRNA's fold), each row also carries
+    ``derna_structure`` / ``vienna_structure`` (+ ``vienna_mfe`` from ``vienna_mfe_col``,
+    which for this parquet is ``e_nested`` = Knotergy energy of the ViennaRNA fold) for the
+    switch catalog.
     """
     import pandas as pd
 
@@ -920,8 +1016,11 @@ def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: 
     has_aa = "aa_seq" in df.columns
     has_len = "aa_len" in df.columns
     has_derna = bool(derna_col) and derna_col in df.columns
-    if derna_col and not has_derna:
-        raise SystemExit(f"--derna-col {derna_col!r} not in parquet columns: {list(df.columns)}")
+    has_vienna = bool(vienna_col) and vienna_col in df.columns
+    has_vmfe = bool(vienna_mfe_col) and vienna_mfe_col in df.columns
+    for col, present in ((derna_col, has_derna), (vienna_col, has_vienna)):
+        if col and not present:
+            raise SystemExit(f"column {col!r} not in parquet columns: {list(df.columns)}")
     rows = []
     for _, r in df.iterrows():
         seq = str(r[seq_col])
@@ -936,6 +1035,10 @@ def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: 
         }
         if has_derna:
             row["derna_structure"] = str(r[derna_col])
+        if has_vienna:
+            row["vienna_structure"] = str(r[vienna_col])
+            if has_vmfe:
+                row["vienna_mfe"] = float(r[vienna_mfe_col])
         rows.append(row)
     return rows
 
@@ -993,6 +1096,10 @@ def finalise_entries(rows: List[Dict]) -> List[Dict]:
         }
         if "derna_structure" in r:
             entry["derna_structure"] = r["derna_structure"]
+        if "vienna_structure" in r:
+            entry["vienna_structure"] = r["vienna_structure"]
+            if "vienna_mfe" in r:
+                entry["vienna_mfe"] = r["vienna_mfe"]
         entries.append(entry)
     return entries
 
@@ -1008,6 +1115,14 @@ def main() -> None:
     parser.add_argument("--struct-col", default="knotty_canon_db", help="parquet dot-bracket column")
     parser.add_argument("--derna-col", default="derna_nested_db",
                         help="parquet column with DeRNA's initial fold (switch catalog)")
+    parser.add_argument("--derna-mfe-json", default=None,
+                        help="JSON {idx: energy} of Knotergy MFE for the DeRNA fold "
+                             "(from scripts/eval/compute_derna_knotergy.py); shown on switch cards")
+    parser.add_argument("--vienna-col", default="vienna_db",
+                        help="parquet column with the ViennaRNA fold (switch catalog)")
+    parser.add_argument("--vienna-mfe-col", default="e_nested",
+                        help="parquet column with the ViennaRNA fold's Knotergy energy "
+                             "(e_nested = knotergy(seq, vienna_db))")
     parser.add_argument("--pk-col", default="has_pk", help="parquet boolean PK-flag column")
     parser.add_argument("--indices", default="all", help="Row indices: comma-list, 'a:b' slice, or 'all'")
     parser.add_argument("--filter", choices=["none", "pk", "nonpk"], default="none", help="Keep only PK / non-PK rows")
@@ -1038,8 +1153,18 @@ def main() -> None:
     )
     parser.add_argument(
         "--prerender-switch", action="store_true",
-        help="Switchable: bake BOTH the Knotty fold (--struct-col) and DeRNA's initial fold "
-             "(--derna-col); clicking a card flips between them. Renders like --prerender-hybrid.",
+        help="Switchable: bake the Knotty, ViennaRNA and DeRNA folds; a per-card top bar "
+             "switches between them and Compare shows all three. Renders like --prerender-hybrid.",
+    )
+    parser.add_argument(
+        "--switch-render", default="knotty,vienna,derna",
+        help="switch mode: comma list of folds to (re)render; folds omitted here reuse their "
+             "existing SVG files (incremental re-render). Default renders all three.",
+    )
+    parser.add_argument(
+        "--reuse-assets-from", default=None,
+        help="switch mode: copy existing *.svg from this dir into the output assets dir before "
+             "building (for folds not in --switch-render).",
     )
     parser.add_argument(
         "--forna-jobs", type=int, default=4,
@@ -1056,8 +1181,11 @@ def main() -> None:
         rows = load_npy_rows(args.data, args.protein_len)
         source_name = os.path.basename(args.data)
     else:
-        rows = load_parquet_rows(args.parquet, args.aa_len, args.seq_col, args.struct_col,
-                                 args.pk_col, derna_col=args.derna_col if args.prerender_switch else None)
+        rows = load_parquet_rows(
+            args.parquet, args.aa_len, args.seq_col, args.struct_col, args.pk_col,
+            derna_col=args.derna_col if args.prerender_switch else None,
+            vienna_col=args.vienna_col if args.prerender_switch else None,
+            vienna_mfe_col=args.vienna_mfe_col if args.prerender_switch else None)
         source_name = os.path.basename(args.parquet)
         if args.aa_len is not None:
             source_name += f" aa{args.aa_len}"
@@ -1066,20 +1194,54 @@ def main() -> None:
     rows = select_rows(rows, filt=args.filter, random_n=args.random, seed=args.seed, indices=args.indices)
     entries = finalise_entries(rows)
 
+    if args.derna_mfe_json:
+        derna_mfe = json.load(open(args.derna_mfe_json))
+        derna_mfe = derna_mfe.get("energies", derna_mfe)  # accept the compute script's wrapper
+        n_hit = 0
+        for e in entries:
+            v = derna_mfe.get(str(e["idx"]))
+            if v is not None:
+                e["derna_mfe"] = float(v)
+                n_hit += 1
+        print(f"  derna-mfe: attached {n_hit}/{len(entries)} energies")
+
     n_pk = sum(1 for e in entries if e["pk"])
     title = args.title or f"Secondary Structure Catalog — {source_name} ({len(entries)} entries)"
 
     if args.prerender_switch:
-        # Switchable: render BOTH folds (Knotty + DeRNA initial); a card flips on click.
-        missing = [e["idx"] for e in entries if "derna_structure" not in e]
-        if missing:
-            raise SystemExit(f"--prerender-switch needs --derna-col in the parquet; "
-                             f"{len(missing)} rows lack it (e.g. idx {missing[:5]})")
-        css, svgs_knotty = render_hybrid_svgs(entries, args.forna_jobs, "structure")
-        _, svgs_derna = render_hybrid_svgs(entries, args.forna_jobs, "derna_structure")
-        n_diff = sum(1 for e in entries if e["structure"] != e["derna_structure"])
-        print(f"  switch: {len(entries)} entries · Knotty + DeRNA folds ({n_diff} differ)")
-        out_html = build_img_switch_html(entries, title, css, svgs_knotty, svgs_derna, args.out)
+        # Switchable: render all three folds (Knotty, ViennaRNA, DeRNA initial).
+        for key, flag in (("derna_structure", "--derna-col"), ("vienna_structure", "--vienna-col")):
+            missing = [e["idx"] for e in entries if key not in e]
+            if missing:
+                raise SystemExit(f"--prerender-switch needs {flag} in the parquet; "
+                                 f"{len(missing)} rows lack it (e.g. idx {missing[:5]})")
+        # Copy reused folds' SVGs into the output assets dir first, so build can skip them.
+        if args.reuse_assets_from:
+            import glob
+            import shutil
+            _, dst = _assets_dir_for(args.out)
+            n_copied = 0
+            for src in glob.glob(os.path.join(args.reuse_assets_from, "*.svg")):
+                shutil.copy2(src, dst)
+                n_copied += 1
+            print(f"  switch: reused {n_copied} existing SVG files from {args.reuse_assets_from}")
+        render_set = {f.strip() for f in args.switch_render.split(",") if f.strip()}
+        none = [None] * len(entries)
+        css = ""
+        folds = {}
+        for name, key in (("knotty", "structure"), ("vienna", "vienna_structure"),
+                          ("derna", "derna_structure")):
+            if name in render_set:
+                c, folds[name] = render_hybrid_svgs(entries, args.forna_jobs, key)
+                css = css or c
+            else:
+                folds[name] = none
+        n_kd = sum(1 for e in entries if e["structure"] != e["derna_structure"])
+        n_kv = sum(1 for e in entries if e["structure"] != e["vienna_structure"])
+        print(f"  switch: {len(entries)} entries · rendered {sorted(render_set)} "
+              f"(Knotty≠DeRNA {n_kd}, Knotty≠ViennaRNA {n_kv})")
+        out_html = build_img_switch_html(entries, title, css, folds["knotty"], folds["vienna"],
+                                         folds["derna"], args.out)
     elif args.prerender_hybrid:
         # Hybrid: forna force (A) for non-PK, NAView (B) for PK.
         css, svgs = render_hybrid_svgs(entries, args.forna_jobs, "structure")
