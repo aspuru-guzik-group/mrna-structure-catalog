@@ -244,6 +244,17 @@ STATIC_CARD_TEMPLATE = """    <figure class="card" data-idx="{idx}" data-aalen="
       <span class="badge {pk_class}">{pk_label}</span>
     </figure>"""
 
+SWITCH_CARD_TEMPLATE = """    <figure class="card switch" data-idx="{idx}" data-aalen="{aalen}" data-bp="{bp}" data-pkbp="{pkbp}" data-mfe="{mfe}">
+      <div class="fornac">{inner}<span class="whichtag"><span class="lab-knotty">Knotty</span><span class="lab-derna">DeRNA initial</span>{same}</span></div>
+      <figcaption>
+        <span class="title">{title}</span>
+        <span class="meta meta-knotty">{meta_knotty}</span>
+        <span class="meta meta-derna">{meta_derna}</span>
+        <span class="aa">{aa}</span>
+      </figcaption>
+      <span class="badge {pk_class}">{pk_label}</span>
+    </figure>"""
+
 # Shared page CSS for the pre-rendered (static) catalogs. Plain string (no interpolation).
 _STATIC_PAGE_CSS = """\
   :root { color-scheme: light; }  /* opt out of browser auto-dark (it inverts SVG bg to black) */
@@ -281,6 +292,24 @@ _STATIC_PAGE_CSS = """\
   .fornac .lay-on { display: none; }
   body.force-on .fornac .lay-off { display: none; }
   body.force-on .fornac .lay-on { display: block; }
+  /* Switch (per-card click): Knotty shown by default, DeRNA-initial when card.show-derna */
+  .card.switch { cursor: pointer; }
+  .card.switch .fornac { position: relative; }
+  .card.switch .struct-derna { display: none; }
+  .card.switch.show-derna .struct-knotty { display: none; }
+  .card.switch.show-derna .struct-derna { display: block; }
+  /* corner tag naming the currently-shown fold; flips with the card */
+  .whichtag { position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 10px;
+              font-size: 11px; font-weight: 700; letter-spacing: 0.3px; pointer-events: none;
+              background: #e7e0f7; color: #5b3ea8; border: 1px solid #c9bced; }
+  .card.show-derna .whichtag { background: #dcefff; color: #0b5cab; border-color: #a9d2f5; }
+  .card.switch .whichtag .lab-derna,
+  .card.switch.show-derna .whichtag .lab-knotty { display: none; }
+  .card.switch.show-derna .whichtag .lab-derna { display: inline; }
+  .card .whichtag .same { color: #888; font-weight: 500; }
+  .card.switch .meta-derna { display: none; }
+  .card.switch.show-derna .meta-knotty { display: none; }
+  .card.switch.show-derna .meta-derna { display: block; }
 """
 
 # Client-side sort (DOM reorder only — no re-render). Plain string; no interpolation.
@@ -329,6 +358,30 @@ _COMPARE_JS = """\
     const on = document.body.classList.toggle("force-on");
     btn.textContent = "Force layout: " + (on ? "ON (relaxed)" : "OFF (static)");
     btn.classList.toggle("active", on);
+  });
+})();
+"""
+
+# Per-card click toggles between the Knotty fold (default) and DeRNA's initial fold.
+# Event-delegated on the grid; a click that produced a text selection (e.g. dragging over
+# the AA sequence) is ignored so selecting text never flips the card.
+_SWITCH_JS = """\
+(function () {
+  const grid = document.querySelector(".grid");
+  if (!grid) return;
+  grid.addEventListener("click", (e) => {
+    const sel = window.getSelection();
+    if (sel && sel.type === "Range" && String(sel).length) return;
+    const card = e.target.closest(".card.switch");
+    if (card) card.classList.toggle("show-derna");
+  });
+  const all = document.getElementById("switch-all");
+  if (all) all.addEventListener("click", () => {
+    const on = document.body.classList.toggle("all-derna");
+    document.querySelectorAll(".card.switch")
+      .forEach((c) => c.classList.toggle("show-derna", on));
+    all.textContent = on ? "Show all: Knotty" : "Show all: DeRNA initial";
+    all.classList.toggle("active", on);
   });
 })();
 """
@@ -643,6 +696,28 @@ def run_forna_prerender(entries: List[Dict], jobs: int = 1):
     return css, svgs
 
 
+def render_hybrid_svgs(entries, jobs, struct_key="structure"):
+    """Hybrid render of each entry's ``struct_key`` fold: forna's force layout for non-PK
+    structures (compact) and pure-Python NAView for pseudoknotted ones. Returns (css, svgs).
+
+    PK is judged per structure so this also works for the DeRNA-initial fold, which uses the
+    same sequence but a different (nested) bracket string.
+    """
+    work = [{"sequence": e["sequence"], "structure": e[struct_key],
+             "pk": structure_stats(e[struct_key])["is_pseudoknotted"]} for e in entries]
+    svgs = [None] * len(work)
+    nonpk = [k for k, w in enumerate(work) if not w["pk"]]
+    css = ""
+    if nonpk:
+        css, fsvgs = run_forna_prerender([work[k] for k in nonpk], jobs=jobs)
+        for k, s in zip(nonpk, fsvgs):
+            svgs[k] = minify_svg(s) if s else ""
+    for k, w in enumerate(work):
+        if w["pk"]:
+            svgs[k] = naview_svg(w["sequence"], w["structure"])
+    return css, svgs
+
+
 def _static_cards(entries, inners):
     return "\n".join(
         STATIC_CARD_TEMPLATE.format(
@@ -752,6 +827,59 @@ def build_img_compare_html(entries, title, fornac_css, svgs_off, svgs_on, out_pa
                         controls_html=controls, extra_js=_COMPARE_JS)
 
 
+def _switch_meta(entry, which: str) -> str:
+    """Caption line for one fold of a switch card ('knotty' or 'derna')."""
+    struct = entry["structure"] if which == "knotty" else entry["derna_structure"]
+    stats = structure_stats(struct)
+    parts = [f"AA{entry['aa_len']}"] if entry.get("aa_len") else []
+    parts += [f"{stats['length']} nt", f"{stats['pairs']} bp"]
+    if which == "knotty":
+        if entry["pk"]:
+            parts.append(f"{stats['pk_pairs']} PK-bp")
+        if entry.get("mfe") is not None:
+            parts.append(f"MFE {entry['mfe']:.1f}")
+        label = "Knotty:"
+    else:
+        label = "DeRNA:"
+    return f"{label} " + " · ".join(parts)
+
+
+def build_img_switch_html(entries, title, fornac_css, svgs_knotty, svgs_derna, out_path: str) -> str:
+    """Switchable catalog: bake BOTH the Knotty fold and DeRNA's initial fold per structure;
+    clicking a card flips it between them (DOM/CSS only — instant, no live layout). A header
+    button flips every card at once."""
+    assets_dirname, assets_dir = _assets_dir_for(out_path)
+    style_tag = f"<style>{fornac_css}</style>"
+    cards = []
+    for e, svg_k, svg_d in zip(entries, svgs_knotty, svgs_derna):
+        stem = f"aa{e.get('aa_len', 0)}_idx{e['idx']}"
+        f_k, f_d = f"{stem}_knotty.svg", f"{stem}_derna.svg"
+        _write_standalone_svg(assets_dir, f_k, svg_k, style_tag)
+        _write_standalone_svg(assets_dir, f_d, svg_d, style_tag)
+        inner = (
+            f'<img class="struct-knotty" loading="lazy" width="320" height="280" src="{assets_dirname}/{f_k}" alt="idx {e["idx"]} Knotty">'
+            f'<img class="struct-derna" loading="lazy" width="320" height="280" src="{assets_dirname}/{f_d}" alt="idx {e["idx"]} DeRNA initial">'
+        )
+        same = '<span class="same"> ≡ same</span>' if e["structure"] == e["derna_structure"] else ""
+        cards.append(SWITCH_CARD_TEMPLATE.format(
+            inner=inner, idx=e["idx"], aalen=e.get("aa_len", 0), bp=e["bp"],
+            pkbp=e["pk_pairs"], mfe="" if e.get("mfe") is None else f"{e['mfe']:.4f}",
+            title=html.escape(e["title"]),
+            meta_knotty=html.escape(_switch_meta(e, "knotty")),
+            meta_derna=html.escape(_switch_meta(e, "derna")),
+            aa="AA " + html.escape(e.get("aa", "")),
+            pk_class="pk" if e["pk"] else "nonpk",
+            pk_label="PK" if e["pk"] else "Non-PK",
+            same=same,
+        ))
+    n_diff = sum(1 for e in entries if e["structure"] != e["derna_structure"])
+    controls = '<button id="switch-all" class="force-toggle">Show all: DeRNA initial</button>\n'
+    note = (f"{len(entries)} entries · click a card to switch between the Knotty fold and "
+            f"DeRNA's initial fold ({n_diff} differ) · ./{assets_dirname}/")
+    return _static_page(title, note, "", "\n".join(cards),
+                        controls_html=controls, extra_js=_SWITCH_JS)
+
+
 def load_npy_rows(path: str, protein_len: int) -> List[Dict]:
     """Load a BPSeq-tokenised .npy dataset into normalised rows (decode each token row)."""
     data = np.load(path)
@@ -771,11 +899,14 @@ def load_npy_rows(path: str, protein_len: int) -> List[Dict]:
     return rows
 
 
-def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: str) -> List[Dict]:
+def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: str,
+                      derna_col: str = None) -> List[Dict]:
     """Load a per-sample profiling parquet (e.g. issue #47 pk_profile.parquet) into rows.
 
     Uses the dataset's own PK flag (``pk_col``, e.g. ``has_pk``) as the authoritative
-    label rather than re-deriving it from the bracket string.
+    label rather than re-deriving it from the bracket string. When ``derna_col`` names an
+    existing column (DeRNA's initial fold), each row also carries ``derna_structure`` for
+    the switch catalog.
     """
     import pandas as pd
 
@@ -788,10 +919,13 @@ def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: 
     has_mfe = "e_pk" in df.columns  # Knotergy energy of the displayed (PK-allowed) fold
     has_aa = "aa_seq" in df.columns
     has_len = "aa_len" in df.columns
+    has_derna = bool(derna_col) and derna_col in df.columns
+    if derna_col and not has_derna:
+        raise SystemExit(f"--derna-col {derna_col!r} not in parquet columns: {list(df.columns)}")
     rows = []
     for _, r in df.iterrows():
         seq = str(r[seq_col])
-        rows.append({
+        row = {
             "idx": int(r[idx_col]) if idx_col else len(rows),
             "sequence": seq,
             "structure": str(r[struct_col]),
@@ -799,7 +933,10 @@ def load_parquet_rows(path: str, aa_len, seq_col: str, struct_col: str, pk_col: 
             "mfe": float(r["e_pk"]) if has_mfe else None,
             "aa": str(r["aa_seq"]) if has_aa else translate(seq),
             "aa_len": int(r["aa_len"]) if has_len else len(seq) // 3,
-        })
+        }
+        if has_derna:
+            row["derna_structure"] = str(r[derna_col])
+        rows.append(row)
     return rows
 
 
@@ -841,7 +978,7 @@ def finalise_entries(rows: List[Dict]) -> List[Dict]:
             parts.append(f"{stats['pk_pairs']} PK-bp")
         if mfe is not None:
             parts.append(f"MFE {mfe:.1f}")
-        entries.append({
+        entry = {
             "aa_len": aa_len if aa_len is not None else 0,
             "idx": r["idx"],
             "sequence": r["sequence"],
@@ -853,7 +990,10 @@ def finalise_entries(rows: List[Dict]) -> List[Dict]:
             "pk_pairs": stats["pk_pairs"],
             "mfe": mfe,
             "aa": r.get("aa", ""),
-        })
+        }
+        if "derna_structure" in r:
+            entry["derna_structure"] = r["derna_structure"]
+        entries.append(entry)
     return entries
 
 
@@ -866,6 +1006,8 @@ def main() -> None:
     parser.add_argument("--aa-len", type=int, default=None, help="parquet: filter to this aa_len")
     parser.add_argument("--seq-col", default="mrna_seq", help="parquet sequence column")
     parser.add_argument("--struct-col", default="knotty_canon_db", help="parquet dot-bracket column")
+    parser.add_argument("--derna-col", default="derna_nested_db",
+                        help="parquet column with DeRNA's initial fold (switch catalog)")
     parser.add_argument("--pk-col", default="has_pk", help="parquet boolean PK-flag column")
     parser.add_argument("--indices", default="all", help="Row indices: comma-list, 'a:b' slice, or 'all'")
     parser.add_argument("--filter", choices=["none", "pk", "nonpk"], default="none", help="Keep only PK / non-PK rows")
@@ -895,6 +1037,11 @@ def main() -> None:
         help="Hybrid: forna force (A) for non-PK structures, pure-Python NAView (B) for PK structures",
     )
     parser.add_argument(
+        "--prerender-switch", action="store_true",
+        help="Switchable: bake BOTH the Knotty fold (--struct-col) and DeRNA's initial fold "
+             "(--derna-col); clicking a card flips between them. Renders like --prerender-hybrid.",
+    )
+    parser.add_argument(
         "--forna-jobs", type=int, default=4,
         help="parallel headless-Chrome processes for forna-force rendering (non-PK)",
     )
@@ -909,7 +1056,8 @@ def main() -> None:
         rows = load_npy_rows(args.data, args.protein_len)
         source_name = os.path.basename(args.data)
     else:
-        rows = load_parquet_rows(args.parquet, args.aa_len, args.seq_col, args.struct_col, args.pk_col)
+        rows = load_parquet_rows(args.parquet, args.aa_len, args.seq_col, args.struct_col,
+                                 args.pk_col, derna_col=args.derna_col if args.prerender_switch else None)
         source_name = os.path.basename(args.parquet)
         if args.aa_len is not None:
             source_name += f" aa{args.aa_len}"
@@ -921,20 +1069,22 @@ def main() -> None:
     n_pk = sum(1 for e in entries if e["pk"])
     title = args.title or f"Secondary Structure Catalog — {source_name} ({len(entries)} entries)"
 
-    if args.prerender_hybrid:
+    if args.prerender_switch:
+        # Switchable: render BOTH folds (Knotty + DeRNA initial); a card flips on click.
+        missing = [e["idx"] for e in entries if "derna_structure" not in e]
+        if missing:
+            raise SystemExit(f"--prerender-switch needs --derna-col in the parquet; "
+                             f"{len(missing)} rows lack it (e.g. idx {missing[:5]})")
+        css, svgs_knotty = render_hybrid_svgs(entries, args.forna_jobs, "structure")
+        _, svgs_derna = render_hybrid_svgs(entries, args.forna_jobs, "derna_structure")
+        n_diff = sum(1 for e in entries if e["structure"] != e["derna_structure"])
+        print(f"  switch: {len(entries)} entries · Knotty + DeRNA folds ({n_diff} differ)")
+        out_html = build_img_switch_html(entries, title, css, svgs_knotty, svgs_derna, args.out)
+    elif args.prerender_hybrid:
         # Hybrid: forna force (A) for non-PK, NAView (B) for PK.
-        svgs = [None] * len(entries)
-        nonpk = [k for k, e in enumerate(entries) if not e["pk"]]
-        css = ""
-        if nonpk:
-            css, fsvgs = run_forna_prerender([entries[k] for k in nonpk], jobs=args.forna_jobs)
-            for k, s in zip(nonpk, fsvgs):
-                svgs[k] = minify_svg(s) if s else ""
-        for k, e in enumerate(entries):
-            if e["pk"]:
-                svgs[k] = naview_svg(e["sequence"], e["structure"])
+        css, svgs = render_hybrid_svgs(entries, args.forna_jobs, "structure")
         n_pk_r = sum(1 for e in entries if e["pk"])
-        print(f"  hybrid: {len(nonpk)} non-PK via forna-force, {n_pk_r} PK via NAView")
+        print(f"  hybrid: {len(entries) - n_pk_r} non-PK via forna-force, {n_pk_r} PK via NAView")
         if args.prerender == "img":
             out_html = build_img_svg_html(entries, title, css, svgs, args.out)
         else:
@@ -969,7 +1119,8 @@ def main() -> None:
     with open(args.out, "w") as fh:
         fh.write(out_html)
 
-    mode = "compare-force" if args.prerender_compare_force else args.prerender
+    mode = ("switch" if args.prerender_switch else
+            "compare-force" if args.prerender_compare_force else args.prerender)
     print(f"Wrote {args.out}: {len(entries)}/{total} entries selected ({n_pk} PK, {len(entries) - n_pk} non-PK)"
           f" · mode={mode}")
 
